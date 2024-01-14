@@ -14,14 +14,12 @@ public class TestService {
     private final TestRepository repository;
 
     @Transactional
-    public String getTestData(){
-        if(!repository.existsByTestId(1)){
-            repository.save(new TestEntity(1, "hello world"));
-        }
+    public TestEntity getTestData(){
+        repository.save(TestEntity.builder()
+                .testValue("hello world").build());
 
-        Optional<TestEntity> byTestId = repository.findByTestId(1);
+        Optional<TestEntity> byTestId = repository.findTopByOrderByTestIdDesc();
         return byTestId
-                .orElseThrow()
-                .getTestValue();
+                .orElseThrow();
     }
 }

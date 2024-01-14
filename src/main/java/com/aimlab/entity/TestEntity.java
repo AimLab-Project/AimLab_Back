@@ -1,15 +1,14 @@
 package com.aimlab.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "test_table")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class TestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
