@@ -1,0 +1,19 @@
+spring:
+  # Dev DB
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/dev?allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: qwe123
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+# 배포된 개발 서버의 Port 번호는 8080
+server:
+  port: 8080
