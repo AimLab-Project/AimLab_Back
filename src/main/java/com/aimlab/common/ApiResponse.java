@@ -1,4 +1,4 @@
-package common;
+package com.aimlab.common;
 
 import lombok.*;
 
