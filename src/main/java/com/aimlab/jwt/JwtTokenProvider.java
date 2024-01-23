@@ -39,7 +39,7 @@ public class JwtTokenProvider {
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds){
         this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000L;
+        this.tokenValidityInMilliseconds = tokenValidityInSeconds;
     }
 
     /**
@@ -61,7 +61,7 @@ public class JwtTokenProvider {
 
         long now = (new Date()).getTime();
 
-        Date validity = new Date(now + this.tokenValidityInMilliseconds * 1000);
+        Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
         return Jwts.builder()
                 .setSubject(authentication.getName())

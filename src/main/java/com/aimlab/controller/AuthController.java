@@ -33,7 +33,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto){
         UsernamePasswordAuthenticationToken authenticationToken
-                = new UsernamePasswordAuthenticationToken(loginDto.getUser_email(), loginDto.getUser_password());
+                = new UsernamePasswordAuthenticationToken(loginDto.getUserEmail(), loginDto.getUserPassword());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);

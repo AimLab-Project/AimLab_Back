@@ -24,14 +24,14 @@ public class UserService {
      */
     @Transactional
     public UserDto signup(UserDto userDto){
-        if(userRepository.findOneByUserEmail(userDto.getUser_email()).orElse(null) != null){
+        if(userRepository.findOneByUserEmail(userDto.getUserEmail()).orElse(null) != null){
             throw new RuntimeException("이미 가입되어 있는 유저입니다.");
         }
 
         User user = User.builder()
-                .userEmail(userDto.getUser_email())
-                .userPassword(passwordEncoder.encode(userDto.getUser_password()))
-                .userNickname(userDto.getUser_nickname())
+                .userEmail(userDto.getUserEmail())
+                .userPassword(passwordEncoder.encode(userDto.getUserPassword()))
+                .userNickname(userDto.getUserNickname())
                 .authority(Authority.ROLE_USER)
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now()).build();

@@ -14,23 +14,23 @@ import lombok.*;
 public class UserDto {
     @NotNull
     @Size(min = 3, max = 50)
-    private String user_email;
+    private String userEmail;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
     @Size(min = 3, max = 100)
-    private String user_password;
+    private String userPassword;
 
     @NotNull
     @Size(min = 3, max = 50)
-    private String user_nickname;
+    private String userNickname;
 
     public static UserDto fromEntity(User user){
         if(user == null)
             return null;
 
         return UserDto.builder()
-                .user_email(user.getUserEmail())
-                .user_nickname(user.getUserNickname()).build();
+                .userEmail(user.getUserEmail())
+                .userNickname(user.getUserNickname()).build();
     }
 }
