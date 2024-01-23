@@ -7,7 +7,7 @@ import com.aimlab.jwt.JwtFilter;
 import com.aimlab.jwt.JwtTokenProvider;
 import com.aimlab.service.UserService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthController {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;

@@ -3,14 +3,14 @@ package com.aimlab.controller;
 import com.aimlab.entity.TestEntity;
 import com.aimlab.service.TestService;
 import com.aimlab.util.SecurityUtil;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequiredArgsConstructor
 @RestController
-@AllArgsConstructor
 @RequestMapping("/api")
 public class TestController {
     private final TestService service;
