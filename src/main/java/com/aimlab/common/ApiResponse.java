@@ -7,8 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ApiResponse <T>{
+public class ApiResponse {
     private int resultCode;
     private String msg;
-    private T data;
+    private Object data;
 }
