@@ -1,5 +1,6 @@
 package com.aimlab.controller;
 
+import com.aimlab.common.ApiResponse;
 import com.aimlab.dto.LoginDto;
 import com.aimlab.dto.TokenDto;
 import com.aimlab.dto.UserDto;
@@ -9,7 +10,6 @@ import com.aimlab.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,7 +31,7 @@ public class AuthController {
      * @param loginDto 이메일, 비밀번호
      */
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto){
+    public ResponseEntity<?> authorize(@Valid @RequestBody LoginDto loginDto){
         UsernamePasswordAuthenticationToken authenticationToken
                 = new UsernamePasswordAuthenticationToken(loginDto.getUserEmail(), loginDto.getUserPassword());
 
@@ -43,10 +43,10 @@ public class AuthController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new ResponseEntity<>(
-                new TokenDto(jwt),
-                httpHeaders,
-                HttpStatus.OK);
+        return ResponseEntity
+                .ok()
+                .headers(httpHeaders)
+                .body(ApiResponse.success(new TokenDto(jwt)));
     }
 
     /**
@@ -54,7 +54,9 @@ public class AuthController {
      * @param userDto 회원가입 정보
      */
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> signup(@Valid @RequestBody UserDto userDto){
-        return ResponseEntity.ok(userService.signup(userDto));
+    public ResponseEntity<?> signup(@Valid @RequestBody UserDto userDto){
+        return ResponseEntity
+                .ok()
+                .body(ApiResponse.success(userService.signup(userDto)));
     }
 }

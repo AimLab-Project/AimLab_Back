@@ -1,6 +1,8 @@
 package com.aimlab.exception;
 
 import com.aimlab.common.ApiResponse;
+import com.aimlab.common.ErrorCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,46 +20,40 @@ public class GlobalExceptionHandler {
      * 존재하지 않는 이메일
      */
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ApiResponse> handleUserNameNotFound(UsernameNotFoundException exception){
-        return getExceptionResponse(exception);
+    public ResponseEntity<?> handleUserNameNotFound(UsernameNotFoundException exception){
+        return getErrorResponse(ErrorCode.NOT_EXIST_USER);
     }
 
     /**
      * 잘못된 비밀번호
      */
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ApiResponse> handleWrongPassword(BadCredentialsException exception){
-        return getExceptionResponse(exception);
+    public ResponseEntity<?> handleWrongPassword(BadCredentialsException exception){
+        return getErrorResponse(ErrorCode.INVALID_PASSWORD);
     }
 
     /**
      * 잘못된 매개변수 형식 전달
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse> handleWrongArgument(MethodArgumentNotValidException exception){
-        return getExceptionResponse("잘못된 매개변수 형식입니다");
+    public ResponseEntity<?> handleWrongArgument(MethodArgumentNotValidException exception){
+        return getErrorResponse(ErrorCode.INVALID_PARAMETER);
     }
 
     /**
      * 런터임 오류
      */
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ApiResponse> handleRuntimeException(RuntimeException exception){
-        return getExceptionResponse(exception);
+    public ResponseEntity<?> handleRuntimeException(RuntimeException exception){
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApiResponse.error(exception));
     }
 
 
-    /**
-     * 예외 처리 시 공통적으로 생성되는 응답데이터를 반환
-     */
-    private ResponseEntity<ApiResponse> getExceptionResponse(Exception exception){
-        return ResponseEntity.ok(ApiResponse.builder()
-                .msg(exception.getMessage())
-                .resultCode(200).build());
-    }
-    private ResponseEntity<ApiResponse> getExceptionResponse(String msg){
-        return ResponseEntity.ok(ApiResponse.builder()
-                .msg(msg)
-                .resultCode(200).build());
+    private ResponseEntity<?> getErrorResponse(ErrorCode errorCode){
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(ApiResponse.fail(errorCode));
     }
 }

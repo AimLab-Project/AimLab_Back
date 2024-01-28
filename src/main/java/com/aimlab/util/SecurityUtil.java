@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,8 +17,8 @@ public class SecurityUtil {
     public static Optional<String> getCurrentUserId(){
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if(authentication == null){
-            logger.debug("현재 인증정보가 없습니다");
+        if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
+            logger.info("현재 인증정보가 없습니다");
             return Optional.empty();
         }
 
