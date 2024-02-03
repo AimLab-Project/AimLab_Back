@@ -6,7 +6,7 @@ import com.aimlab.dto.LoginDto;
 import com.aimlab.dto.TokenDto;
 import com.aimlab.dto.UserDto;
 import com.aimlab.exception.CustomException;
-import com.aimlab.jwt.JwtFilter;
+import com.aimlab.security.JwtAuthenticationFilter;
 import com.aimlab.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class AuthController {
         TokenDto jwt = authService.login(loginDto.getUserEmail(), loginDto.getUserPassword());
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt.getAccessToken());
+        httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt.getAccessToken());
 
         return ResponseEntity
                 .ok()

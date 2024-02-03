@@ -1,4 +1,4 @@
-package com.aimlab.jwt;
+package com.aimlab.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

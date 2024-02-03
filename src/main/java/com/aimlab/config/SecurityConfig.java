@@ -1,6 +1,9 @@
 package com.aimlab.config;
 
-import com.aimlab.jwt.*;
+import com.aimlab.security.JwtAccessDeniedHandler;
+import com.aimlab.security.JwtAuthenticationEntryPoint;
+import com.aimlab.security.JwtAuthenticationFilter;
+import com.aimlab.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +34,11 @@ public class SecurityConfig {
     }
 
     @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter(){
+        return new JwtAuthenticationFilter(jwtTokenProvider);
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .httpBasic(AbstractHttpConfigurer::disable)
@@ -53,8 +61,10 @@ public class SecurityConfig {
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler(jwtAccessDeniedHandler)
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                )
-                .with(new JwtSecurityConfig(jwtTokenProvider), customizer -> {});
+                );
+
+        // jwt 필터 추가
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

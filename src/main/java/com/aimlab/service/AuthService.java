@@ -7,7 +7,7 @@ import com.aimlab.entity.Authority;
 import com.aimlab.entity.RefreshTokenEntity;
 import com.aimlab.entity.User;
 import com.aimlab.exception.CustomException;
-import com.aimlab.jwt.JwtTokenProvider;
+import com.aimlab.security.JwtTokenProvider;
 import com.aimlab.repository.RefreshTokenRepository;
 import com.aimlab.repository.UserRepository;
 import com.aimlab.security.UserPrincipal;
