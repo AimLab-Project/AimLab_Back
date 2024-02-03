@@ -1,5 +1,6 @@
 package com.aimlab.util;
 
+import com.aimlab.security.UserPrincipal;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +24,11 @@ public class SecurityUtil {
         }
 
         String userId = null;
-        if(authentication.getPrincipal() instanceof UserDetails user){
+        if(authentication.getPrincipal() instanceof UserPrincipal user){
+            userId = user.getUserId();
+        } else if (authentication.getPrincipal() instanceof UserDetails user) {
             userId = user.getUsername();
-        } else if(authentication.getPrincipal() instanceof String) {
+        }else if(authentication.getPrincipal() instanceof String) {
             userId = (String) authentication.getPrincipal();
         }
 

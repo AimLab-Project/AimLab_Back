@@ -41,6 +41,15 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * CustomException 에러 핸들링
+     */
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<?> handleCustomException(CustomException exception){
+        return getErrorResponse(exception.getErrorCode());
+    }
+
+
+    /**
      * 런터임 오류
      */
     @ExceptionHandler(RuntimeException.class)

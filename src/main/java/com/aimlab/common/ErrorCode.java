@@ -22,9 +22,10 @@ public enum ErrorCode{
     EXPIRED_TOKEN(-202, "토큰이 만료되었습니다.", HttpStatus.UNAUTHORIZED),
     INVALID_SIGNATURE(-203, "JWT 서명이 유효하지 않습니다.", HttpStatus.UNAUTHORIZED),
     UNSUPPORTED_TOKEN(-204, "지원하지 않는 JWT 토큰 형식입니다.", HttpStatus.UNAUTHORIZED),
-    NOT_EXIST_USER(-205, "등록된 이메일이 없습니다.", HttpStatus.NOT_FOUND),
+    NOT_EXIST_USER(-205, "등록된 회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     INVALID_PASSWORD(-206, "비밀번호가 틀렸습니다.", HttpStatus.BAD_REQUEST),
-    DUPLICATED_EMAIL(-207, "이미 사용중인 이메일이니다.", HttpStatus.BAD_REQUEST);
+    DUPLICATED_EMAIL(-207, "이미 사용중인 이메일이니다.", HttpStatus.BAD_REQUEST),
+    INVALID_REFRESH_TOKEN(-208,"유효하지 않은 리프레시 토큰 입니다.", HttpStatus.UNAUTHORIZED);
 
     private final int code;
     private final String message;

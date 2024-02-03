@@ -2,21 +2,20 @@ package com.aimlab.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @AllArgsConstructor
-public class JwtFilter extends GenericFilterBean {
+public class JwtFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
@@ -25,11 +24,11 @@ public class JwtFilter extends GenericFilterBean {
     /**
      * 토큰의 인증 정보를 SecurityContext에 저장
      */
+
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String token = resolveToken(httpServletRequest);
-        String requestURI = httpServletRequest.getRequestURI();
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String token = resolveToken(request);
+        String requestURI = request.getRequestURI();
 
         if(StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)){
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
@@ -41,9 +40,8 @@ public class JwtFilter extends GenericFilterBean {
             logger.info("유효한 jwt 토큰이 없습니다, uri : {}", requestURI);
         }
 
-        chain.doFilter(request, response);
+        filterChain.doFilter(request, response);
     }
-
     /**
      * Http Request에서 토큰 정보를 추출하는 메소드
      */
@@ -54,4 +52,5 @@ public class JwtFilter extends GenericFilterBean {
         }
         return null;
     }
+
 }

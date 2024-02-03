@@ -1,24 +1,21 @@
 package com.aimlab.jwt;
 
+import com.aimlab.config.AppProperties;
+import com.aimlab.dto.TokenDto;
+import com.aimlab.repository.RefreshTokenRepository;
+import com.aimlab.security.UserPrincipal;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 /**
  * 토큰 생성, 유효성 검증을 담당하는 TokenProvider
@@ -27,19 +24,14 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
     private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
-    private static final String AUTHORITIES_KEY = "auth";
-    private final String secret;
-    private final long tokenValidityInMilliseconds;
+    private final AppProperties appProperties;
     private Key key;
 
     /**
      * Spring 설정 파일에 있는 jwt관련 설정 정보를 주입 받는다.
      */
-    public JwtTokenProvider(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds){
-        this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInSeconds;
+    public JwtTokenProvider(AppProperties appProperties, RefreshTokenRepository refreshTokenRepository){
+        this.appProperties = appProperties;
     }
 
     /**
@@ -47,27 +39,34 @@ public class JwtTokenProvider {
      */
     @PostConstruct
     public void init() throws Exception {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        byte[] keyBytes = Decoders.BASE64.decode(appProperties.getAuth().getSecret());
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
     /**
-     * Authentication 객체의 권한 정보를 이용해 토큰을 리턴
+     * Authentication 객체의 권한 정보를 이용해 토큰 DTO를 리턴
+     * accessToken, refreshToken 둘 다 생성
      */
-    public String createToken(Authentication authentication) {
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+    public TokenDto createTokens(Authentication authentication) {
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        String userId = userPrincipal.getUserId();
 
+        String accessToken = createToken(userId, appProperties.getAuth().getAccessTokenValidity());
+        String refreshToken = createToken(userId, appProperties.getAuth().getRefreshTokenValidity());
+
+        return TokenDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken).build();
+    }
+
+    public String createToken(String userId, long validity){
         long now = (new Date()).getTime();
 
-        Date validity = new Date(now + this.tokenValidityInMilliseconds);
-
         return Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim(AUTHORITIES_KEY, authorities)
+                .setSubject(userId)
+                .setExpiration(new Date(now + validity))
+                .setIssuedAt(new Date(now))
                 .signWith(key, SignatureAlgorithm.HS512)
-                .setExpiration(validity)
                 .compact();
     }
 
@@ -82,18 +81,15 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
 
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .toList();
+        UserPrincipal principal = new UserPrincipal(claims.getSubject(), null, null, null);
 
-        User principal = new User(claims.getSubject(), "", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(principal, token, null);
     }
 
     /**
-     * 토큰의 유효성 검사를 수행
+     * JWT 토큰의 유효성을 검사하는 메서드
+     * @param token JWT 토큰
+     * @return boolean 유효성 검사 결과
      */
     public boolean validateToken(String token){
         try{
@@ -101,11 +97,11 @@ public class JwtTokenProvider {
             return true;
         } catch (io.jsonwebtoken.security.SignatureException | MalformedJwtException e){
             logger.info("잘못된 JWT 서명");
-        } catch (ExpiredJwtException e) {
+        } catch (ExpiredJwtException exception) {
             logger.info("만료된 JWT 토큰");
-        } catch (UnsupportedJwtException e){
+        } catch (UnsupportedJwtException exception){
             logger.info("지원되지 않는 JWT 토큰");
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException exception){
             logger.info("잘못된 JWT 토큰");
         }
         return false;
