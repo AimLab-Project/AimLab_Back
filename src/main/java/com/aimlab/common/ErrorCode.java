@@ -14,6 +14,7 @@ public enum ErrorCode{
     MISSING_REQUIRED_PARAMETER(-102, "필수 파라미터 누락되었습니다.", HttpStatus.BAD_REQUEST),
     UNAUTHORIZED_REQUEST(-103, "해당 리소스에 대한 권한이 없습니다.", HttpStatus.UNAUTHORIZED),
     NOT_FOUND_RESOURCE(-104, "요청하신 리소스를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    FORBIDDEN_REQUEST(-105, "해당 요청에 대한 권한이 없습니다.", HttpStatus.FORBIDDEN),
 
     /**
      * 인증, 인가 관련된 에러
