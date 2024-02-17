@@ -1,6 +1,37 @@
+# JWT 설정
 app:
   auth:
     header: auth
-    secret: YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd6eXoxMjMxMjMxMjMxMjMxMjMxMzEyMzEyMzEzMTIzMTIzMTIzMTMxMjMxMzEzMTMxMjM
-    access-token-validity: 3600000 # 60분
-    refresh-token-validity: 2592000000 # 30일
+    secret: ${JWT_SECRET}
+    access-token-validity: 3600000      # 60분
+    refresh-token-validity: 2592000000  # 30일
+  mail:
+    verification-validity-time: 3     # 인증번호 유효시간
+    verification-retention-time: 10   # 인증번호 보관시간
+
+# 이메일 설정
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          connectiontimeout: 5000
+          writetimeout: 5000
+          starttls:
+            enable: true
+            required: true
+
+  # 이메일 템플릿 (타임리프 사용)
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    check-template-location: true
+    cache: true

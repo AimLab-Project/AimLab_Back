@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "app")
 public class AppProperties {
     private final Auth auth = new Auth();
+    private final Mail mail = new Mail();
 
     @Getter
     @Setter
@@ -18,5 +19,12 @@ public class AppProperties {
         private String secret;
         private long accessTokenValidity;
         private long refreshTokenValidity;
+    }
+
+    @Getter
+    @Setter
+    public static class Mail{
+        private long verificationValidityTime;
+        private long verificationRetentionTime;
     }
 }

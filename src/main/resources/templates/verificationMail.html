@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification Code</title>
+</head>
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f5f5f5;">
+<div style="max-width: 500px; margin: auto; background-color: #fff; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); padding: 20px;">
+    <img src="cid:logo" alt="logo" style="display: block; margin: auto; width: 100%; height: auto; margin-bottom: 20px;">
+    <h1 style="font-size: 24px; text-align: center; margin-bottom: 20px;">이메일 인증 코드</h1>
+    <p style="font-size: 16px;">안녕하세요. 에임 향상을 위한 서비스 플랫폼 AIM SHARP 입니다.</p>
+    <p style="font-size: 16px;">인증절차를 완료하려면, 하단에 있는 6자리 인증 코드를 사용해주세요.</p>
+    <div style="background-color: #f0f0f0; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
+        <span th:text="${code}" style="font-size: 36px; letter-spacing: 6px; color: #007bff;"></span>
+    </div>
+    <p style="font-size: 12px; color: #888;">인증번호를 드래그하여 복사하거나 직접 입력해주세요</p>
+    <p style="font-size: 12px; color: #888;" th:text="'개인정보 보호를 위해 인증코드는 ' + ${validityTime} + '분 후 만료됩니다.'"></p>
+    <p style="font-size: 12px; color: #888;">만약, 인증코드를 요청하지 않았다면, 이 메일을 무시해주세요.</p>
+</div>
+</body>
+</html>

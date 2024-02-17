@@ -1,8 +1,8 @@
 package com.aimlab.service;
 
 import com.aimlab.common.ErrorCode;
+import com.aimlab.dto.SignUpDto;
 import com.aimlab.dto.TokenDto;
-import com.aimlab.dto.UserDto;
 import com.aimlab.entity.Authority;
 import com.aimlab.entity.RefreshTokenEntity;
 import com.aimlab.entity.User;
@@ -36,27 +36,32 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationProvider authenticationProvider;
     private final JwtTokenProvider jwtTokenProvider;
+    private final MailVerificationService mailVerificationService;
 
     /**
      * 회원가입 로직
-     * @param userDto : 클라이언트가 전달한 유저정보
-     * @return UserDto
+     * @param request : 클라이언트가 전달한 유저정보
      */
     @Transactional
-    public UserDto signup(UserDto userDto){
-        if(userRepository.findOneByUserEmail(userDto.getUserEmail()).orElse(null) != null){
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");    // TODO : 추후 Exception 종류 변경
+    public void signup(SignUpDto.Request request){
+        String email = request.getUser_email();
+
+        // 1. 이메일 사용여부 확인
+        if(userRepository.findOneByUserEmail(email).isPresent()){
+            throw new CustomException(ErrorCode.DUPLICATED_EMAIL);
         }
 
+        // 2. 인증 여부 확인
+        mailVerificationService.checkConfirmedVerification(request.getKey(), email);
+
+        // 3. 회원 생성 및 등록
         User user = User.builder()
-                .userEmail(userDto.getUserEmail())
-                .userPassword(passwordEncoder.encode(userDto.getUserPassword()))
-                .userNickname(userDto.getUserNickname())
+                .userEmail(email)
+                .userPassword(passwordEncoder.encode(request.getUser_password()))
+                .userNickname(request.getUser_nickname())
                 .authority(Authority.ROLE_USER)
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now()).build();
-
-        return UserDto.fromEntity(userRepository.save(user));
     }
 
     /**

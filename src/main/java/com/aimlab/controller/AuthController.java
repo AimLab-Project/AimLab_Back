@@ -2,25 +2,22 @@ package com.aimlab.controller;
 
 import com.aimlab.common.ApiResponse;
 import com.aimlab.common.ErrorCode;
-import com.aimlab.dto.LoginDto;
-import com.aimlab.dto.TokenDto;
-import com.aimlab.dto.UserDto;
+import com.aimlab.dto.*;
 import com.aimlab.exception.CustomException;
 import com.aimlab.security.JwtAuthenticationFilter;
 import com.aimlab.service.AuthService;
+import com.aimlab.service.MailVerificationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+    private final MailVerificationService mailVerificationService;
 
     /**
      * 로그인
@@ -41,13 +38,16 @@ public class AuthController {
 
     /**
      * 회원가입
-     * @param userDto 회원가입 정보
      */
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@Valid @RequestBody UserDto userDto){
+    public ResponseEntity<?> signup(@Valid @RequestBody SignUpDto.Request request){
+        authService.signup(request);
+
         return ResponseEntity
                 .ok()
-                .body(ApiResponse.success(authService.signup(userDto)));
+                .body(ApiResponse.success(SignUpDto.Response.builder()
+                        .user_email(request.getUser_email())
+                        .user_nickname(request.getUser_nickname()).build()));
     }
 
     /**
@@ -62,5 +62,31 @@ public class AuthController {
         return ResponseEntity
                 .ok()
                 .body(ApiResponse.success(authService.refreshTokens(refreshToken)));
+    }
+
+    /**
+     * 이메일 인증 코드 발급
+     * @param emailVerificationDto 이메일
+     */
+    @PostMapping("/email/verification")
+    public ResponseEntity<?> sendEmailVerificationCode(@Valid @RequestBody EmailVerificationDto emailVerificationDto){
+        String key = mailVerificationService.createVerification(emailVerificationDto.getUser_email());
+
+        return ResponseEntity
+                .ok()
+                .body(ApiResponse.success(key));
+    }
+
+    /**
+     * 이메일 인증 코드 확인
+     * @param emailVerificationDto 키, 이메일, 인증 코드
+     */
+    @GetMapping("/email/verification/confirm")
+    public ResponseEntity<?> verificateCode(@Valid @RequestBody EmailVerificationDto emailVerificationDto){
+        mailVerificationService.confirmVerification(emailVerificationDto);
+
+        return ResponseEntity
+                .ok()
+                .body(ApiResponse.success("이메일 인증이 완료되었습니다."));
     }
 }
