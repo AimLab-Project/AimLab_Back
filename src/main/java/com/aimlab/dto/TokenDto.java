@@ -1,6 +1,5 @@
 package com.aimlab.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 /**
@@ -11,9 +10,13 @@ import lombok.*;
 @Setter
 @Builder
 public class TokenDto {
-    @NotBlank
     private String accessToken;
-
-    @NotBlank
     private String refreshToken;
+
+    @Getter
+    @Setter
+    @Builder
+    public static class Response implements ResponseDto{
+        private String access_token;
+    }
 }

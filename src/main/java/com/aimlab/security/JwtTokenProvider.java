@@ -80,7 +80,7 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
 
-        UserPrincipal principal = new UserPrincipal(claims.getSubject(), null, null, null);
+        UserPrincipal principal = new UserPrincipal(claims.getSubject(), null, null, null, null);
 
         return new UsernamePasswordAuthenticationToken(principal, token, null);
     }

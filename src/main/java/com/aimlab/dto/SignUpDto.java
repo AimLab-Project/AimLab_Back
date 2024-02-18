@@ -12,7 +12,7 @@ public class SignUpDto {
 
     @Getter
     @Setter
-    public static class Request{
+    public static class Request implements RequestDto{
         @NotBlank
         @Email
         @Size(min = 3, max = 50)
@@ -34,7 +34,7 @@ public class SignUpDto {
     @Getter
     @Setter
     @Builder
-    public static class Response{
+    public static class Response implements ResponseDto{
         private String user_email;
         private String user_nickname;
     }

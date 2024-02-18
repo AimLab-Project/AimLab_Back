@@ -6,13 +6,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-public class EmailVerificationDto {
+public class EmailVerificationConfirmDto {
     @Getter
     @Setter
     public static class Request implements RequestDto{
+        @NotBlank
+        private String key;
+
         @Email
         @NotBlank
         private String user_email;
+
+        @NotBlank
+        private String verification_code;
     }
 
     @Getter

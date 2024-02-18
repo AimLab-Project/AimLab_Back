@@ -26,7 +26,7 @@ public class MailVerificationEntity {
     private String verificationCode;
 
     @Column(name = "expired_at")
-    private LocalDateTime expiredAt;
+    private LocalDateTime expiresAt;
 
     @Column(name = "retention_at")
     private LocalDateTime retentionAt;

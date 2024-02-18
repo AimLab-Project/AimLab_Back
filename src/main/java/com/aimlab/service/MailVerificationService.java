@@ -15,13 +15,15 @@ public interface MailVerificationService {
 
     /**
      * 인증 확인
-     * @param emailVerificationDto 이메일 인증 DTO
+     * @param key 인증키
+     * @param email 이메일
+     * @param verificationCode 인증코드
      */
-    void confirmVerification(EmailVerificationDto emailVerificationDto);
+    void confirmVerification(String key, String email, String verificationCode);
 
     /**
      * 인증 완료된 데이터 확인
-     * @param key
+     * @param key 인증키
      */
     boolean checkConfirmedVerification(String key, String email);
 }

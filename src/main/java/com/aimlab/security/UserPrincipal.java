@@ -12,24 +12,28 @@ import java.util.*;
 public class UserPrincipal implements UserDetails {
     private final String userId;
     private final String userEmail;
+    private final String userNickname;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public UserPrincipal(String userId, String userEmail, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(String userId, String userEmail, String password, String userNickname, Collection<? extends GrantedAuthority> authorities) {
         this.userId = userId;
         this.userEmail = userEmail;
         this.password = password;
+        this.userNickname = userNickname;
         this.authorities = authorities;
     }
 
     public static UserPrincipal create(User user){
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        List<GrantedAuthority> authorities =
+                Collections.singletonList(new SimpleGrantedAuthority(user.getAuthority().getValue()));
 
         return new UserPrincipal(
                 user.getUserId().toString(),
                 user.getUserEmail(),
                 user.getUserPassword(),
+                user.getUserNickname(),
                 authorities);
     }
 

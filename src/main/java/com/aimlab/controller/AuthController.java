@@ -4,12 +4,14 @@ import com.aimlab.common.ApiResponse;
 import com.aimlab.common.ErrorCode;
 import com.aimlab.dto.*;
 import com.aimlab.exception.CustomException;
-import com.aimlab.security.JwtAuthenticationFilter;
+import com.aimlab.security.UserPrincipal;
 import com.aimlab.service.AuthService;
 import com.aimlab.service.MailVerificationService;
+import com.aimlab.util.SecurityUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,19 +23,28 @@ public class AuthController {
 
     /**
      * 로그인
-     * @param loginDto 이메일, 비밀번호
+     * @param request 이메일, 비밀번호
      */
     @PostMapping("/login")
-    public ResponseEntity<?> authorize(@Valid @RequestBody LoginDto loginDto){
-        TokenDto jwt = authService.login(loginDto.getUserEmail(), loginDto.getUserPassword());
+    public ResponseEntity<?> authorize(@Valid @RequestBody LoginDto.Request request){
+        TokenDto tokenDto = authService.login(request.getUser_email(), request.getUser_password());
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + jwt.getAccessToken());
+        UserPrincipal user = SecurityUtil.getCurrentUser().orElseThrow();
+
+        ResponseCookie cookie = ResponseCookie
+                .from("refresh_token", tokenDto.getRefreshToken())
+                .httpOnly(true)
+                .secure(true)
+                .path("/").build();
 
         return ResponseEntity
                 .ok()
-                .headers(httpHeaders)
-                .body(ApiResponse.success(jwt));
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(ApiResponse.success(LoginDto.Response.builder()
+                        .user_id(user.getUserId())
+                        .user_email(user.getUserEmail())
+                        .user_nickname(user.getUserNickname())
+                        .accessToken(tokenDto.getAccessToken()).build()));
     }
 
     /**
@@ -51,42 +62,59 @@ public class AuthController {
     }
 
     /**
-     * Refresh Token 재발급
+     * Refresh Token 재발급 <br>
+     * Access Token은 Response Body, Refresh Token은 Http Only Cookie로 보낸다.
      */
     @PostMapping("/token/refresh")
-    public ResponseEntity<?> refreshAccessToken(@CookieValue(name = "refresh_token", required = false) String refreshToken ){
+    public ResponseEntity<?> refreshAccessToken(@CookieValue(name = "refresh_token", required = true) String refreshToken ){
         if(refreshToken == null || refreshToken.isEmpty()){
             throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
+        TokenDto tokenDto = authService.refreshTokens(refreshToken);
+
+        ResponseCookie cookie = ResponseCookie
+                .from("refresh_token", tokenDto.getRefreshToken())
+                .httpOnly(true)
+                .secure(true)
+                .path("/").build();
+
         return ResponseEntity
                 .ok()
-                .body(ApiResponse.success(authService.refreshTokens(refreshToken)));
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(ApiResponse.success(
+                        TokenDto.Response.builder()
+                                .access_token(tokenDto.getAccessToken()).build()));
     }
 
     /**
      * 이메일 인증 코드 발급
-     * @param emailVerificationDto 이메일
+     * @param request 이메일
      */
     @PostMapping("/email/verification")
-    public ResponseEntity<?> sendEmailVerificationCode(@Valid @RequestBody EmailVerificationDto emailVerificationDto){
-        String key = mailVerificationService.createVerification(emailVerificationDto.getUser_email());
+    public ResponseEntity<?> sendEmailVerificationCode(@Valid @RequestBody EmailVerificationDto.Request request){
+        String key = mailVerificationService.createVerification(request.getUser_email());
 
         return ResponseEntity
                 .ok()
-                .body(ApiResponse.success(key));
+                .body(ApiResponse.success(
+                        EmailVerificationDto.Response.builder().key(key).build()));
     }
 
     /**
      * 이메일 인증 코드 확인
-     * @param emailVerificationDto 키, 이메일, 인증 코드
+     * @param request 키, 이메일, 인증 코드
      */
     @GetMapping("/email/verification/confirm")
-    public ResponseEntity<?> verificateCode(@Valid @RequestBody EmailVerificationDto emailVerificationDto){
-        mailVerificationService.confirmVerification(emailVerificationDto);
+    public ResponseEntity<?> verificateCode(@Valid @RequestBody EmailVerificationConfirmDto.Request request){
+        mailVerificationService.confirmVerification(
+                request.getKey(),
+                request.getUser_email(),
+                request.getVerification_code());
 
         return ResponseEntity
                 .ok()
-                .body(ApiResponse.success("이메일 인증이 완료되었습니다."));
+                .body(ApiResponse.success(EmailVerificationConfirmDto.Response.builder()
+                        .key(request.getKey()).build()));
     }
 }

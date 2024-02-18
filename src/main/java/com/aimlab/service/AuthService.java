@@ -62,6 +62,7 @@ public class AuthService {
                 .authority(Authority.ROLE_USER)
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now()).build();
+        userRepository.save(user);
     }
 
     /**
@@ -128,6 +129,13 @@ public class AuthService {
         }
 
         // 4. AT, RT 재발급
-        return jwtTokenProvider.createTokens(authentication);
+        TokenDto newTokens = jwtTokenProvider.createTokens(authentication);
+
+        // 5. 새로 발급한 RT 저장
+        refreshTokenEntity.setRefreshToken(newTokens.getRefreshToken());
+        refreshTokenEntity.setIssueAt(LocalDateTime.now());
+        refreshTokenRepository.save(refreshTokenEntity);
+
+        return newTokens;
     }
 }

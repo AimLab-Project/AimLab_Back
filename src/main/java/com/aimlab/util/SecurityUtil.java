@@ -34,4 +34,19 @@ public class SecurityUtil {
 
         return Optional.ofNullable(userId);
     }
+
+    public static Optional<UserPrincipal> getCurrentUser(){
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
+            logger.info("현재 인증정보가 없습니다");
+            return Optional.empty();
+        }
+
+        if(authentication.getPrincipal() instanceof UserPrincipal user){
+            return Optional.ofNullable(user);
+        }
+
+        return Optional.empty();
+    }
 }

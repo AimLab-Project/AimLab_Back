@@ -2,7 +2,6 @@ package com.aimlab.service;
 
 import com.aimlab.common.ErrorCode;
 import com.aimlab.config.AppProperties;
-import com.aimlab.dto.EmailVerificationDto;
 import com.aimlab.entity.MailVerificationEntity;
 import com.aimlab.exception.CustomException;
 import com.aimlab.repository.MailVerificationRepository;
@@ -38,7 +37,7 @@ public class MailVerificationServiceMysql implements MailVerificationService{
         MailVerificationEntity mailVerification = MailVerificationEntity.builder()
                 .email(email)
                 .verificationCode(verificationCode)
-                .expiredAt(LocalDateTime.now().plusMinutes(validityTime))
+                .expiresAt(LocalDateTime.now().plusMinutes(validityTime))
                 .retentionAt(LocalDateTime.now().plusMinutes(retentionTime))
                 .isConfirm(false).build();
         mailVerificationRepository.save(mailVerification);
@@ -50,20 +49,16 @@ public class MailVerificationServiceMysql implements MailVerificationService{
     }
 
     @Override
-    public void confirmVerification(EmailVerificationDto emailVerificationDto) {
-        UUID key = UUID.fromString(emailVerificationDto.getKey());
-        String verificationCode = emailVerificationDto.getVerification_code();
-        String email = emailVerificationDto.getUser_email();
-
+    public void confirmVerification(String key, String email, String verificationCode) {
         // 1. 인증 데이터 조회
-        MailVerificationEntity mailVerification = mailVerificationRepository.findByKey(key)
+        MailVerificationEntity mailVerification = mailVerificationRepository.findByKey(UUID.fromString(key))
                 .orElseThrow(() -> new CustomException(ErrorCode.INVALID_VERIFICATION_CODE));
 
         // 2. 인증 데이터 유효성 검사
         if (!mailVerification.getVerificationCode().equals(verificationCode)
         || !mailVerification.getEmail().equals(email)){
             throw new CustomException(ErrorCode.INVALID_VERIFICATION_CODE);
-        } else if (mailVerification.getExpiredAt().isBefore(LocalDateTime.now())){
+        } else if (mailVerification.getExpiresAt().isBefore(LocalDateTime.now())){
             throw new CustomException(ErrorCode.EXPIRED_VERIFICATION_CODE);
         }
 
