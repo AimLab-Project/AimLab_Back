@@ -26,5 +26,6 @@ public class AppProperties {
     public static class Mail{
         private long verificationValidityTime;
         private long verificationRetentionTime;
+        private long maxAuthenticationAttempts;
     }
 }

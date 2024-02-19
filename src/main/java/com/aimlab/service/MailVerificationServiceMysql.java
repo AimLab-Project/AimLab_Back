@@ -4,6 +4,7 @@ import com.aimlab.common.ErrorCode;
 import com.aimlab.config.AppProperties;
 import com.aimlab.entity.MailVerificationEntity;
 import com.aimlab.exception.CustomException;
+import com.aimlab.exception.MailVerificationException;
 import com.aimlab.repository.MailVerificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,8 @@ public class MailVerificationServiceMysql implements MailVerificationService{
                 .verificationCode(verificationCode)
                 .expiresAt(LocalDateTime.now().plusMinutes(validityTime))
                 .retentionAt(LocalDateTime.now().plusMinutes(retentionTime))
-                .isConfirm(false).build();
+                .isConfirm(false)
+                .attemptCount(0).build();
         mailVerificationRepository.save(mailVerification);
 
         // 3. 이메일 전송
@@ -49,17 +51,28 @@ public class MailVerificationServiceMysql implements MailVerificationService{
     }
 
     @Override
+    @Transactional(noRollbackFor = MailVerificationException.class)
     public void confirmVerification(String key, String email, String verificationCode) {
         // 1. 인증 데이터 조회
         MailVerificationEntity mailVerification = mailVerificationRepository.findByKey(UUID.fromString(key))
-                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_VERIFICATION_CODE));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VERIFICATION));
 
         // 2. 인증 데이터 유효성 검사
-        if (!mailVerification.getVerificationCode().equals(verificationCode)
-        || !mailVerification.getEmail().equals(email)){
-            throw new CustomException(ErrorCode.INVALID_VERIFICATION_CODE);
-        } else if (mailVerification.getExpiresAt().isBefore(LocalDateTime.now())){
-            throw new CustomException(ErrorCode.EXPIRED_VERIFICATION_CODE);
+        // 2-1. 이메일 인증 초과 횟수 여부
+        if (mailVerification.getAttemptCount() > appProperties.getMail().getMaxAuthenticationAttempts()){
+            throw new MailVerificationException(ErrorCode.VERIFICATION_ATTEMPTS_EXCEEDED);
+        }
+
+        // 2-2. 인증 만료 여부
+        if(mailVerification.getExpiresAt().isBefore(LocalDateTime.now())){
+            throw new MailVerificationException(ErrorCode.EXPIRED_VERIFICATION_CODE);
+        }
+
+        // 2-3. 인증 번호 or 이메일 불일치 => 인증 횟수 증가
+        if(!mailVerification.getVerificationCode().equals(verificationCode) || !mailVerification.getEmail().equals(email)){
+            mailVerification.setAttemptCount(mailVerification.getAttemptCount() + 1);
+            mailVerificationRepository.save(mailVerification);
+            throw new MailVerificationException(ErrorCode.INVALID_VERIFICATION_CODE);
         }
 
         // 3. 확인 완료

@@ -33,4 +33,7 @@ public class MailVerificationEntity {
 
     @Column(name = "is_confirm")
     private boolean isConfirm;
+
+    @Column(name = "attempt_count")
+    private long attemptCount;
 }

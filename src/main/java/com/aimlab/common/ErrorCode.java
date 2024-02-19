@@ -27,9 +27,11 @@ public enum ErrorCode{
     DUPLICATED_EMAIL(-207, "이미 사용중인 이메일입니다.", HttpStatus.BAD_REQUEST),
     INVALID_REFRESH_TOKEN(-208,"유효하지 않은 리프레시 토큰 입니다.", HttpStatus.UNAUTHORIZED),
     UNABLE_TO_SEND_EMAIL(-209, "이메일을 전송할 수 없습니다.", HttpStatus.BAD_REQUEST),
-    INVALID_VERIFICATION_CODE(-210, "잘못된 이메일 인증 코드입니다.", HttpStatus.BAD_REQUEST),
-    EXPIRED_VERIFICATION_CODE(-211, "이메일 인증 코드가 만료되었습니다.", HttpStatus.BAD_REQUEST),
-    UNAUTHORIZED_EMAIL(-212, "인증되지 않은 이메일입니다.", HttpStatus.UNAUTHORIZED);
+    NOT_FOUND_VERIFICATION(-210, "이메일 인증 데이터를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
+    INVALID_VERIFICATION_CODE(-211, "잘못된 이메일 인증 코드입니다.", HttpStatus.BAD_REQUEST),
+    EXPIRED_VERIFICATION_CODE(-212, "이메일 인증 코드가 만료되었습니다.", HttpStatus.BAD_REQUEST),
+    UNAUTHORIZED_EMAIL(-213, "인증되지 않은 이메일입니다.", HttpStatus.UNAUTHORIZED),
+    VERIFICATION_ATTEMPTS_EXCEEDED(-214, "이메일 인증 횟수를 초과했습니다.", HttpStatus.UNAUTHORIZED);
 
     private final int code;
     private final String message;
