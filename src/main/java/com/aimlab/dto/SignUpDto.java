@@ -16,16 +16,16 @@ public class SignUpDto {
         @NotBlank
         @Email
         @Size(min = 3, max = 50)
-        private String user_email;
+        private String userEmail;
 
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
         @NotBlank
         @Size(min = 3, max = 100)
-        private String user_password;
+        private String userPassword;
 
         @NotBlank
         @Size(min = 3, max = 50)
-        private String user_nickname;
+        private String userNickname;
 
         @NotBlank
         private String key;
@@ -35,7 +35,7 @@ public class SignUpDto {
     @Setter
     @Builder
     public static class Response implements ResponseDto{
-        private String user_email;
-        private String user_nickname;
+        private String userEmail;
+        private String userNickname;
     }
 }

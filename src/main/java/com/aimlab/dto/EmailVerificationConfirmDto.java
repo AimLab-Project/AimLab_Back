@@ -15,10 +15,10 @@ public class EmailVerificationConfirmDto {
 
         @Email
         @NotBlank
-        private String user_email;
+        private String userEmail;
 
         @NotBlank
-        private String verification_code;
+        private String verificationCode;
     }
 
     @Getter

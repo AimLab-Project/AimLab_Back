@@ -44,7 +44,7 @@ public class AuthService {
      */
     @Transactional
     public void signup(SignUpDto.Request request){
-        String email = request.getUser_email();
+        String email = request.getUserEmail();
 
         // 1. 이메일 사용여부 확인
         if(userRepository.findOneByUserEmail(email).isPresent()){
@@ -57,8 +57,8 @@ public class AuthService {
         // 3. 회원 생성 및 등록
         User user = User.builder()
                 .userEmail(email)
-                .userPassword(passwordEncoder.encode(request.getUser_password()))
-                .userNickname(request.getUser_nickname())
+                .userPassword(passwordEncoder.encode(request.getUserPassword()))
+                .userNickname(request.getUserNickname())
                 .authority(Authority.ROLE_USER)
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now()).build();

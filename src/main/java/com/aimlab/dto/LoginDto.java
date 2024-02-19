@@ -13,20 +13,20 @@ public class LoginDto {
         @NotBlank
         @Email
         @Size(min = 3, max = 50)
-        private String user_email;
+        private String userEmail;
 
         @NotBlank
         @Size(min = 3, max = 100)
-        private String user_password;
+        private String userPassword;
     }
 
     @Getter
     @Setter
     @Builder
     public static class Response implements ResponseDto{
-        private String user_id;
-        private String user_email;
-        private String user_nickname;
+        private String userId;
+        private String userEmail;
+        private String userNickname;
         private String accessToken;
     }
 }

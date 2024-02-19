@@ -27,7 +27,7 @@ public class AuthController {
      */
     @PostMapping("/login")
     public ResponseEntity<?> authorize(@Valid @RequestBody LoginDto.Request request){
-        TokenDto tokenDto = authService.login(request.getUser_email(), request.getUser_password());
+        TokenDto tokenDto = authService.login(request.getUserEmail(), request.getUserPassword());
 
         UserPrincipal user = SecurityUtil.getCurrentUser().orElseThrow();
 
@@ -41,9 +41,9 @@ public class AuthController {
                 .ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(ApiResponse.success(LoginDto.Response.builder()
-                        .user_id(user.getUserId())
-                        .user_email(user.getUserEmail())
-                        .user_nickname(user.getUserNickname())
+                        .userId(user.getUserId())
+                        .userEmail(user.getUserEmail())
+                        .userNickname(user.getUserNickname())
                         .accessToken(tokenDto.getAccessToken()).build()));
     }
 
@@ -57,8 +57,8 @@ public class AuthController {
         return ResponseEntity
                 .ok()
                 .body(ApiResponse.success(SignUpDto.Response.builder()
-                        .user_email(request.getUser_email())
-                        .user_nickname(request.getUser_nickname()).build()));
+                        .userEmail(request.getUserEmail())
+                        .userNickname(request.getUserNickname()).build()));
     }
 
     /**
@@ -84,7 +84,7 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(ApiResponse.success(
                         TokenDto.Response.builder()
-                                .access_token(tokenDto.getAccessToken()).build()));
+                                .accessToken(tokenDto.getAccessToken()).build()));
     }
 
     /**
@@ -93,7 +93,7 @@ public class AuthController {
      */
     @PostMapping("/email/verification")
     public ResponseEntity<?> sendEmailVerificationCode(@Valid @RequestBody EmailVerificationDto.Request request){
-        String key = mailVerificationService.createVerification(request.getUser_email());
+        String key = mailVerificationService.createVerification(request.getUserEmail());
 
         return ResponseEntity
                 .ok()
@@ -105,12 +105,12 @@ public class AuthController {
      * 이메일 인증 코드 확인
      * @param request 키, 이메일, 인증 코드
      */
-    @GetMapping("/email/verification/confirm")
+    @PostMapping("/email/verification/confirm")
     public ResponseEntity<?> verificateCode(@Valid @RequestBody EmailVerificationConfirmDto.Request request){
         mailVerificationService.confirmVerification(
                 request.getKey(),
-                request.getUser_email(),
-                request.getVerification_code());
+                request.getUserEmail(),
+                request.getVerificationCode());
 
         return ResponseEntity
                 .ok()

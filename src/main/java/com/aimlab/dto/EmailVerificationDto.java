@@ -12,7 +12,7 @@ public class EmailVerificationDto {
     public static class Request implements RequestDto{
         @Email
         @NotBlank
-        private String user_email;
+        private String userEmail;
     }
 
     @Getter

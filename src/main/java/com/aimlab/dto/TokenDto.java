@@ -1,5 +1,7 @@
 package com.aimlab.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
 /**
@@ -9,6 +11,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TokenDto {
     private String accessToken;
     private String refreshToken;
@@ -17,6 +20,6 @@ public class TokenDto {
     @Setter
     @Builder
     public static class Response implements ResponseDto{
-        private String access_token;
+        private String accessToken;
     }
 }

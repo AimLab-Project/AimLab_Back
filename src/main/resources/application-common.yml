@@ -36,3 +36,6 @@ spring:
     encoding: UTF-8
     check-template-location: true
     cache: true
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
