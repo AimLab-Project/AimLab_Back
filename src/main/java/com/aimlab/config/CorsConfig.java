@@ -6,8 +6,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.util.List;
-
 @Configuration
 public class CorsConfig {
     @Bean
@@ -16,11 +14,11 @@ public class CorsConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOrigins(List.of("*"));
-        corsConfiguration.setAllowedMethods(List.of("*"));
-        corsConfiguration.setAllowedHeaders(List.of("*"));
+        corsConfiguration.addAllowedOriginPattern("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedHeader("*");
 
-        source.registerCorsConfiguration("*", corsConfiguration);
+        source.registerCorsConfiguration("/**", corsConfiguration);
 
         return new CorsFilter(source);
     }
