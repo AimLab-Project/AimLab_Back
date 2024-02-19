@@ -10,24 +10,8 @@ app:
     verification-retention-time: 10   # 인증번호 보관시간
     max-authentication-attempts : 5   # 인증 가능 최대 횟수
 
-# 이메일 설정
-spring:
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: aimsharp12
-    password: nvoypcuzzrjwnihz
-    properties:
-      mail:
-        smtp:
-          auth: true
-          timeout: 5000
-          connectiontimeout: 5000
-          writetimeout: 5000
-          starttls:
-            enable: true
-            required: true
 
+spring:
   # 이메일 템플릿 (타임리프 사용)
   thymeleaf:
     prefix: classpath:/templates/

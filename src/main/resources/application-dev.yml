@@ -10,6 +10,23 @@ spring:
     hibernate:
       ddl-auto: update
 
+  # 이메일 설정
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          connectiontimeout: 5000
+          writetimeout: 5000
+          starttls:
+            enable: true
+            required: true
+
 # 배포된 개발 서버의 Port 번호는 8080
 server:
   port: 8080
