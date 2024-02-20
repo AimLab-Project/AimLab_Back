@@ -17,7 +17,12 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user")
+@Table(name = "user",
+        uniqueConstraints = {
+            @UniqueConstraint(name = "email_unique", columnNames = "user_email"),
+            @UniqueConstraint(name = "nickname_unique", columnNames = "user_nickname")
+        }
+)
 public class User {
     @Id
     @Column(name = "user_id")
