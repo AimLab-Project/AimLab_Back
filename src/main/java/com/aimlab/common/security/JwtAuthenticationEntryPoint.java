@@ -1,12 +1,11 @@
-package com.aimlab.security;
+package com.aimlab.common.security;
 
 import com.aimlab.common.ApiResponse;
-import com.aimlab.common.ErrorCode;
+import com.aimlab.common.exception.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,5 @@
 package com.aimlab.service;
 
-import com.aimlab.dto.EmailVerificationDto;
-
 /**
  * 이메일 인증 서비스
  */

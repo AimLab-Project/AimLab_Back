@@ -1,4 +1,4 @@
-package com.aimlab.security;
+package com.aimlab.common.security;
 
 import com.aimlab.entity.User;
 import lombok.Getter;

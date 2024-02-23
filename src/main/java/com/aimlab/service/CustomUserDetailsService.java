@@ -1,10 +1,10 @@
 package com.aimlab.service;
 
-import com.aimlab.common.ErrorCode;
+import com.aimlab.common.exception.ErrorCode;
 import com.aimlab.entity.User;
-import com.aimlab.exception.CustomException;
+import com.aimlab.common.exception.CustomException;
 import com.aimlab.repository.UserRepository;
-import com.aimlab.security.UserPrincipal;
+import com.aimlab.common.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

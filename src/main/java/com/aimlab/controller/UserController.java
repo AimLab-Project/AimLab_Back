@@ -1,7 +1,7 @@
 package com.aimlab.controller;
 
 import com.aimlab.common.ApiResponse;
-import com.aimlab.dto.DuplicateCheckDto;
+import com.aimlab.dto.user.DuplicateCheckDto;
 import com.aimlab.service.UserService;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

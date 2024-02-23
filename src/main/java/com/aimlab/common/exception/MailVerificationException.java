@@ -1,8 +1,6 @@
-package com.aimlab.exception;
+package com.aimlab.common.exception;
 
-import com.aimlab.common.ErrorCode;
-
-public class MailVerificationException extends CustomException{
+public class MailVerificationException extends CustomException {
 
     public MailVerificationException(ErrorCode errorCode) {
         super(errorCode);

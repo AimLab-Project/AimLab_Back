@@ -1,4 +1,4 @@
-package com.aimlab.config;
+package com.aimlab.common.config;
 
 import lombok.Getter;
 import lombok.Setter;

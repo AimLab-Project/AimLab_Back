@@ -1,9 +1,9 @@
-package com.aimlab.config;
+package com.aimlab.common.config;
 
-import com.aimlab.security.JwtAccessDeniedHandler;
-import com.aimlab.security.JwtAuthenticationEntryPoint;
-import com.aimlab.security.JwtAuthenticationFilter;
-import com.aimlab.security.JwtTokenProvider;
+import com.aimlab.common.security.JwtAccessDeniedHandler;
+import com.aimlab.common.security.JwtAuthenticationEntryPoint;
+import com.aimlab.common.security.JwtAuthenticationFilter;
+import com.aimlab.common.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

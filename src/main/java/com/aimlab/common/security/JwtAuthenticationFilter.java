@@ -1,4 +1,4 @@
-package com.aimlab.security;
+package com.aimlab.common.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

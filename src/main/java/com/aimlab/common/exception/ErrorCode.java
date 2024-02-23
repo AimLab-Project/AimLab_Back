@@ -1,4 +1,4 @@
-package com.aimlab.common;
+package com.aimlab.common.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

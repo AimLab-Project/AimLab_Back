@@ -1,4 +1,4 @@
-package com.aimlab.security;
+package com.aimlab.common.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;

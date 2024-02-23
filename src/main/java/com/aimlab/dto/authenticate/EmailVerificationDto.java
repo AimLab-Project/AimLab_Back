@@ -1,5 +1,7 @@
-package com.aimlab.dto;
+package com.aimlab.dto.authenticate;
 
+import com.aimlab.dto.RequestDto;
+import com.aimlab.dto.ResponseDto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
@@ -9,7 +11,7 @@ import lombok.Setter;
 public class EmailVerificationDto {
     @Getter
     @Setter
-    public static class Request implements RequestDto{
+    public static class Request implements RequestDto {
         @Email
         @NotBlank
         private String userEmail;
@@ -18,7 +20,7 @@ public class EmailVerificationDto {
     @Getter
     @Setter
     @Builder
-    public static class Response implements ResponseDto{
+    public static class Response implements ResponseDto {
         private String key;
     }
 }

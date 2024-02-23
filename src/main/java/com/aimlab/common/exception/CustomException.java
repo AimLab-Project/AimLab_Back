@@ -1,6 +1,5 @@
-package com.aimlab.exception;
+package com.aimlab.common.exception;
 
-import com.aimlab.common.ErrorCode;
 import lombok.Getter;
 
 @Getter

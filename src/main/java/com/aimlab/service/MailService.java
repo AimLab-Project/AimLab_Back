@@ -1,7 +1,7 @@
 package com.aimlab.service;
 
-import com.aimlab.common.ErrorCode;
-import com.aimlab.exception.CustomException;
+import com.aimlab.common.exception.ErrorCode;
+import com.aimlab.common.exception.CustomException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
-package com.aimlab.security;
+package com.aimlab.common.security;
 
 import com.aimlab.common.ApiResponse;
-import com.aimlab.common.ErrorCode;
+import com.aimlab.common.exception.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.aimlab.config;
+package com.aimlab.common.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

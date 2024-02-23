@@ -1,10 +1,10 @@
 package com.aimlab.controller;
 
 import com.aimlab.common.ApiResponse;
-import com.aimlab.common.ErrorCode;
-import com.aimlab.dto.*;
-import com.aimlab.exception.CustomException;
-import com.aimlab.security.UserPrincipal;
+import com.aimlab.common.exception.ErrorCode;
+import com.aimlab.common.exception.CustomException;
+import com.aimlab.common.security.UserPrincipal;
+import com.aimlab.dto.authenticate.*;
 import com.aimlab.service.AuthService;
 import com.aimlab.service.MailVerificationService;
 import com.aimlab.util.SecurityUtil;

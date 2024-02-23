@@ -1,10 +1,10 @@
 package com.aimlab.service;
 
-import com.aimlab.common.ErrorCode;
-import com.aimlab.config.AppProperties;
+import com.aimlab.common.exception.ErrorCode;
+import com.aimlab.common.config.AppProperties;
 import com.aimlab.entity.MailVerificationEntity;
-import com.aimlab.exception.CustomException;
-import com.aimlab.exception.MailVerificationException;
+import com.aimlab.common.exception.CustomException;
+import com.aimlab.common.exception.MailVerificationException;
 import com.aimlab.repository.MailVerificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

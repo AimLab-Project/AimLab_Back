@@ -1,7 +1,8 @@
-package com.aimlab.exception;
+package com.aimlab.common.advice;
 
 import com.aimlab.common.ApiResponse;
-import com.aimlab.common.ErrorCode;
+import com.aimlab.common.exception.ErrorCode;
+import com.aimlab.common.exception.CustomException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;

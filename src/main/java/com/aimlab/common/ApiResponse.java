@@ -1,5 +1,6 @@
 package com.aimlab.common;
 
+import com.aimlab.common.exception.ErrorCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 

@@ -1,5 +1,6 @@
-package com.aimlab.dto;
+package com.aimlab.dto.authenticate;
 
+import com.aimlab.dto.ResponseDto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
@@ -19,7 +20,7 @@ public class TokenDto {
     @Getter
     @Setter
     @Builder
-    public static class Response implements ResponseDto{
+    public static class Response implements ResponseDto {
         private String accessToken;
     }
 }

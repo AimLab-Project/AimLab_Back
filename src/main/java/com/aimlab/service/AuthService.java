@@ -1,16 +1,16 @@
 package com.aimlab.service;
 
-import com.aimlab.common.ErrorCode;
-import com.aimlab.dto.SignUpDto;
-import com.aimlab.dto.TokenDto;
+import com.aimlab.common.exception.ErrorCode;
+import com.aimlab.dto.authenticate.SignUpDto;
+import com.aimlab.dto.authenticate.TokenDto;
 import com.aimlab.entity.Authority;
 import com.aimlab.entity.RefreshTokenEntity;
 import com.aimlab.entity.User;
-import com.aimlab.exception.CustomException;
-import com.aimlab.security.JwtTokenProvider;
+import com.aimlab.common.exception.CustomException;
+import com.aimlab.common.security.JwtTokenProvider;
 import com.aimlab.repository.RefreshTokenRepository;
 import com.aimlab.repository.UserRepository;
-import com.aimlab.security.UserPrincipal;
+import com.aimlab.common.security.UserPrincipal;
 import com.aimlab.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
