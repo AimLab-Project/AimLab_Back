@@ -7,6 +7,7 @@ import com.aimlab.common.security.UserPrincipal;
 import com.aimlab.dto.authenticate.*;
 import com.aimlab.service.AuthService;
 import com.aimlab.service.MailVerificationService;
+import com.aimlab.util.CookieUtil;
 import com.aimlab.util.SecurityUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +32,7 @@ public class AuthController {
 
         UserPrincipal user = SecurityUtil.getCurrentUser().orElseThrow();
 
-        ResponseCookie cookie = ResponseCookie
-                .from("refresh_token", tokenDto.getRefreshToken())
-                .httpOnly(true)
-                .secure(true)
-                .path("/").build();
+        ResponseCookie cookie = CookieUtil.getNewCookie("refresh_token", tokenDto.getRefreshToken(), 60*60*24*30);
 
         return ResponseEntity
                 .ok()
@@ -73,11 +70,7 @@ public class AuthController {
 
         TokenDto tokenDto = authService.refreshTokens(refreshToken);
 
-        ResponseCookie cookie = ResponseCookie
-                .from("refresh_token", tokenDto.getRefreshToken())
-                .httpOnly(true)
-                .secure(true)
-                .path("/").build();
+        ResponseCookie cookie = CookieUtil.getNewCookie("refresh_token", tokenDto.getRefreshToken(), 60*60*24*30);
 
         return ResponseEntity
                 .ok()
