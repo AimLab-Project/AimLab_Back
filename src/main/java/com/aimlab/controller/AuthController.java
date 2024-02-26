@@ -49,13 +49,17 @@ public class AuthController {
      */
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignUpDto.Request request){
-        authService.signup(request);
+        TokenDto tokenDto = authService.signup(request);
+
+        ResponseCookie cookie = CookieUtil.getNewCookie("refresh_token", tokenDto.getRefreshToken(), 60*60*24*30);
 
         return ResponseEntity
                 .ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(ApiResponse.success(SignUpDto.Response.builder()
                         .userEmail(request.getUserEmail())
-                        .userNickname(request.getUserNickname()).build()));
+                        .userNickname(request.getUserNickname())
+                        .accessToken(tokenDto.getAccessToken()).build()));
     }
 
     /**

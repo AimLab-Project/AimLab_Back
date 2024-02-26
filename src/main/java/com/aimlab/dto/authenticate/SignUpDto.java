@@ -39,5 +39,6 @@ public class SignUpDto {
     public static class Response implements ResponseDto {
         private String userEmail;
         private String userNickname;
+        private String accessToken;
     }
 }

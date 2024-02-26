@@ -43,7 +43,7 @@ public class AuthService {
      * @param request : 클라이언트가 전달한 유저정보
      */
     @Transactional
-    public void signup(SignUpDto.Request request){
+    public TokenDto signup(SignUpDto.Request request){
         String email = request.getUserEmail();
 
         // 1. 이메일 사용여부 확인
@@ -63,6 +63,9 @@ public class AuthService {
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now()).build();
         userRepository.save(user);
+
+        Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(UserPrincipal.create(user), null, null);
+        return jwtTokenProvider.createTokens(authentication);
     }
 
     /**
