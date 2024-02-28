@@ -30,4 +30,8 @@ public class OAuthUser {
 
     @Column(name = "email")
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
