@@ -1,8 +1,9 @@
-package com.aimlab.common.security.oauth;
+package com.aimlab.common.security.oauth.client;
 
 import com.aimlab.common.exception.CustomException;
 import com.aimlab.common.exception.ErrorCode;
-import com.aimlab.entity.OAuthUser;
+import com.aimlab.common.security.oauth.OAuthServerType;
+import com.aimlab.common.security.oauth.model.OAuthUserDto;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -32,9 +33,9 @@ public class OAuthClientFactory {
      * 각 OAuth 서비스에 해당하는 fetch함수를 호출해주는 Factory 함수
      * @param type OAuth 서비스 제공자 타입
      * @param code Authentication Code
-     * @return OAuth User 엔티티
+     * @return OAuthUserDto 소셜 유저 객체 인터페이스
      */
-    public OAuthUser fetch(OAuthServerType type, String code){
+    public OAuthUserDto fetch(OAuthServerType type, String code){
         OAuthClient client = Optional.ofNullable(clients.get(type))
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_SUPPORTED_OAUTH_SERVER));
 

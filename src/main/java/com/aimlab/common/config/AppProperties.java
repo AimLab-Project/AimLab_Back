@@ -33,15 +33,18 @@ public class AppProperties {
     @Getter
     @Setter
     public static class Oauth{
-        private final Kakao kakao= new Kakao();
+        private final Provider kakao = new Provider();
+        private final Provider naver = new Provider();
+        private final Provider google = new Provider();
 
         @Getter
         @Setter
-        public static class Kakao{
+        public static class Provider{
             private String clientId;
             private String clientSecret;
             private String redirectUri;
-            private String[] Scope;
+            private String Scope;
+            private String state;
         }
     }
 }

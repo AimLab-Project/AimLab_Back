@@ -1,6 +1,6 @@
 package com.aimlab.common.config;
 
-import com.aimlab.common.security.oauth.KakaoHttpClient;
+import com.aimlab.common.security.oauth.client.HttpExchangeHandler;
 import com.aimlab.common.security.oauth.OAuthServerTypeConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -15,12 +15,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     @Bean
-    public KakaoHttpClient kakaoHttpClient(){
+    public HttpExchangeHandler kakaoHttpClient(){
         RestClient restClient = RestClient.create();
         HttpServiceProxyFactory factory = HttpServiceProxyFactory
                 .builderFor(RestClientAdapter.create(restClient)).build();
 
-        return factory.createClient(KakaoHttpClient.class);
+        return factory.createClient(HttpExchangeHandler.class);
     }
 
     @Override

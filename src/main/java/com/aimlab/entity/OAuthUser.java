@@ -4,6 +4,8 @@ import com.aimlab.common.security.oauth.OAuthServerType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -26,12 +28,12 @@ public class OAuthUser {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "server_type")
-    private OAuthServerType oAuthServerType;
+    private OAuthServerType oauthServerType;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 }

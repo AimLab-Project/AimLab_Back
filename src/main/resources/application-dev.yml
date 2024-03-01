@@ -27,6 +27,25 @@ spring:
             enable: true
             required: true
 
+# OAuth 시크릿 정보
+app:
+  oauth:
+    kakao:
+      client-id: ${KAKAO_CLIENT_ID}
+      client-secret: ${KAKAO_CLIENT_SECRET}
+      redirect-uri: ${KAKAO_REDIRECT_URI}
+      scope: account_email
+    naver:
+      client-id: ${NAVER_CLIENT_ID}
+      client-secret: ${NAVER_CLIENT_SECRET}
+      redirect-uri : ${NAVER_REDIRECT_URI}
+      state: ${NAVER_STATE}
+    google:
+      client-id: ${GOOGLE_CLIENT_ID}
+      client-secret: ${GOOGLE_CLIENT_SECRET}
+      redirect-uri: ${REDIRECT_URI}
+
+
 # 배포된 개발 서버의 Port 번호는 8080
 server:
   port: 8080
