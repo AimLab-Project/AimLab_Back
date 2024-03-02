@@ -31,7 +31,12 @@ public enum ErrorCode{
     INVALID_VERIFICATION_CODE(-211, "잘못된 이메일 인증 코드입니다.", HttpStatus.BAD_REQUEST),
     EXPIRED_VERIFICATION_CODE(-212, "이메일 인증 코드가 만료되었습니다.", HttpStatus.BAD_REQUEST),
     UNAUTHORIZED_EMAIL(-213, "인증되지 않은 이메일입니다.", HttpStatus.UNAUTHORIZED),
-    VERIFICATION_ATTEMPTS_EXCEEDED(-214, "이메일 인증 횟수를 초과했습니다.", HttpStatus.UNAUTHORIZED);
+    VERIFICATION_ATTEMPTS_EXCEEDED(-214, "이메일 인증 횟수를 초과했습니다.", HttpStatus.UNAUTHORIZED),
+
+    /**
+     * OAuth 관련 에러
+     */
+    NOT_SUPPORTED_OAUTH_SERVER(-301, "지원하지 않는 소셜 로그인 서버입니다.", HttpStatus.BAD_REQUEST);
 
     private final int code;
     private final String message;

@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class AppProperties {
     private final Auth auth = new Auth();
     private final Mail mail = new Mail();
+    private final Oauth oauth = new Oauth();
 
     @Getter
     @Setter
@@ -27,5 +28,23 @@ public class AppProperties {
         private long verificationValidityTime;
         private long verificationRetentionTime;
         private long maxAuthenticationAttempts;
+    }
+
+    @Getter
+    @Setter
+    public static class Oauth{
+        private final Provider kakao = new Provider();
+        private final Provider naver = new Provider();
+        private final Provider google = new Provider();
+
+        @Getter
+        @Setter
+        public static class Provider{
+            private String clientId;
+            private String clientSecret;
+            private String redirectUri;
+            private String Scope;
+            private String state;
+        }
     }
 }

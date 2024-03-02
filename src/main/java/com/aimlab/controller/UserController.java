@@ -19,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * 이메일 중복 체크 엔드포인트
+     * 이메일 중복 체크 엔드포인트(일반 회원가입)
      * @param email 이메일
      */
     @GetMapping("/email/{email}")
