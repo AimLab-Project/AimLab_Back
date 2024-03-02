@@ -34,7 +34,7 @@ app:
       client-id: ${KAKAO_CLIENT_ID}
       client-secret: ${KAKAO_CLIENT_SECRET}
       redirect-uri: ${KAKAO_REDIRECT_URI}
-      scope: account_email
+      scope: ${KAKAO_SCOPE}
     naver:
       client-id: ${NAVER_CLIENT_ID}
       client-secret: ${NAVER_CLIENT_SECRET}
@@ -43,7 +43,8 @@ app:
     google:
       client-id: ${GOOGLE_CLIENT_ID}
       client-secret: ${GOOGLE_CLIENT_SECRET}
-      redirect-uri: ${REDIRECT_URI}
+      redirect-uri: ${GOOGLE_REDIRECT_URI}
+      scope: ${GOOGLE_SCOPE}
 
 # 실제 운영중인 서버의 Port 번호는 8080
 server:
