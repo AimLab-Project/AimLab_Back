@@ -30,15 +30,26 @@ public class OAuthClientFactory {
     }
 
     /**
+     * 각 OAuth 서비스에 해당하는 로그인 페이지 uri
+     * @param serverType OAuth 서비스 제공자 타입
+     * @return Redirect Uri
+     */
+    public String getLoginRedirectUri(OAuthServerType serverType){
+        return getClient(serverType).getLoginRedirectUri();
+    }
+
+    /**
      * 각 OAuth 서비스에 해당하는 fetch함수를 호출해주는 Factory 함수
-     * @param type OAuth 서비스 제공자 타입
+     * @param serverType OAuth 서비스 제공자 타입
      * @param code Authentication Code
      * @return OAuthUserDto 소셜 유저 객체 인터페이스
      */
-    public OAuthUserDto fetch(OAuthServerType type, String code){
-        OAuthClient client = Optional.ofNullable(clients.get(type))
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_SUPPORTED_OAUTH_SERVER));
+    public OAuthUserDto fetch(OAuthServerType serverType, String code){
+        return getClient(serverType).fetch(code);
+    }
 
-        return client.fetch(code);
+    private OAuthClient getClient(OAuthServerType serverType){
+        return Optional.ofNullable(clients.get(serverType))
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_SUPPORTED_OAUTH_SERVER));
     }
 }

@@ -6,5 +6,7 @@ import com.aimlab.common.security.oauth.model.OAuthUserDto;
 public interface OAuthClient {
     OAuthServerType supportServer();
 
+    String getLoginRedirectUri();
+
     OAuthUserDto fetch(String code);
 }

@@ -66,4 +66,8 @@ public class OAuthService {
         // 4. JWT Token 발급
         return jwtTokenProvider.createTokens(authentication);
     }
+
+    public String getLoginRedirectUri(OAuthServerType serverType){
+        return oAuthClientFactory.getLoginRedirectUri(serverType);
+    }
 }

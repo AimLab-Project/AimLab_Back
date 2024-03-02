@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @RequiredArgsConstructor
@@ -18,6 +19,15 @@ public class GoogleOAuthClient implements OAuthClient{
     @Override
     public OAuthServerType supportServer() {
         return OAuthServerType.GOOGLE;
+    }
+
+    @Override
+    public String getLoginRedirectUri() {
+        return UriComponentsBuilder.fromUriString("https://accounts.google.com/o/oauth2/v2/auth")
+                .queryParam("client_id", appProperties.getOauth().getGoogle().getClientId())
+                .queryParam("redirect_uri", appProperties.getOauth().getGoogle().getRedirectUri())
+                .queryParam("scope", appProperties.getOauth().getGoogle().getScope())
+                .queryParam("response_type", "code").toUriString();
     }
 
     @Override

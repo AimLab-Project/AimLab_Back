@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @RequiredArgsConstructor
@@ -18,6 +19,15 @@ public class NaverOAuthClient implements OAuthClient{
     @Override
     public OAuthServerType supportServer() {
         return OAuthServerType.NAVER;
+    }
+
+    @Override
+    public String getLoginRedirectUri() {
+        return UriComponentsBuilder.fromUriString("https://nid.naver.com/oauth2.0/authorize")
+                .queryParam("client_id", appProperties.getOauth().getNaver().getClientId())
+                .queryParam("redirect_uri", appProperties.getOauth().getNaver().getRedirectUri())
+                .queryParam("state", appProperties.getOauth().getNaver().getState())
+                .queryParam("response_type", "code").toUriString();
     }
 
     @Override
