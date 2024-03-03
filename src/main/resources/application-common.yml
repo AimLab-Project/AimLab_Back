@@ -23,3 +23,13 @@ spring:
 
   jackson:
     property-naming-strategy: SNAKE_CASE
+
+# Open Api 문서
+springdoc:
+  swagger-ui:
+    path: swagger-ui
+    enabled: true
+    display-request-duration: true
+    disable-swagger-default-url: true
+  cache:
+    disabled: true
