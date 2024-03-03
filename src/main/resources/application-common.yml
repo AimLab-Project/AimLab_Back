@@ -31,5 +31,8 @@ springdoc:
     enabled: true
     display-request-duration: true
     disable-swagger-default-url: true
+    tags-sorter: alpha
+    operations-sorter: alpha
   cache:
     disabled: true
+  use-fqn: true
