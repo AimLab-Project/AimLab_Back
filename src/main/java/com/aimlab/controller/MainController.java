@@ -1,6 +1,6 @@
 package com.aimlab.controller;
 
-import com.aimlab.common.ApiResponse;
+import com.aimlab.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +11,6 @@ public class MainController {
     public ResponseEntity<?> rootUrl(){
         return ResponseEntity
                 .ok()
-                .body(ApiResponse.success("This is the RESTful API for AimSharp."));
+                .body(ResponseUtil.success("This is the RESTful API for AimSharp."));
     }
 }

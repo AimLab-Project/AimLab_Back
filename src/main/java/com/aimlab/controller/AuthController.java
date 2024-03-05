@@ -1,6 +1,5 @@
 package com.aimlab.controller;
 
-import com.aimlab.common.ApiResponse;
 import com.aimlab.common.exception.ErrorCode;
 import com.aimlab.common.exception.CustomException;
 import com.aimlab.common.security.UserPrincipal;
@@ -8,6 +7,7 @@ import com.aimlab.dto.authenticate.*;
 import com.aimlab.service.AuthService;
 import com.aimlab.service.MailVerificationService;
 import com.aimlab.util.CookieUtil;
+import com.aimlab.util.ResponseUtil;
 import com.aimlab.util.SecurityUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,13 +37,12 @@ public class AuthController {
         return ResponseEntity
                 .ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(ApiResponse.success(LoginDto.Response.builder()
+                .body(ResponseUtil.success(LoginDto.Response.builder()
                         .userId(user.getUserId())
                         .userEmail(user.getUserEmail())
                         .userNickname(user.getUserNickname())
                         .accessToken(tokenDto.getAccessToken()).build()));
     }
-
     /**
      * 회원가입
      */
@@ -56,7 +55,7 @@ public class AuthController {
         return ResponseEntity
                 .ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(ApiResponse.success(SignUpDto.Response.builder()
+                .body(ResponseUtil.success(SignUpDto.Response.builder()
                         .userEmail(request.getUserEmail())
                         .userNickname(request.getUserNickname())
                         .accessToken(tokenDto.getAccessToken()).build()));
@@ -79,7 +78,7 @@ public class AuthController {
         return ResponseEntity
                 .ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(ApiResponse.success(
+                .body(ResponseUtil.success(
                         TokenDto.Response.builder()
                                 .accessToken(tokenDto.getAccessToken()).build()));
     }
@@ -94,7 +93,7 @@ public class AuthController {
 
         return ResponseEntity
                 .ok()
-                .body(ApiResponse.success(
+                .body(ResponseUtil.success(
                         EmailVerificationDto.Response.builder().key(key).build()));
     }
 
@@ -111,7 +110,7 @@ public class AuthController {
 
         return ResponseEntity
                 .ok()
-                .body(ApiResponse.success(EmailVerificationConfirmDto.Response.builder()
+                .body(ResponseUtil.success(EmailVerificationConfirmDto.Response.builder()
                         .key(request.getKey()).build()));
     }
 }

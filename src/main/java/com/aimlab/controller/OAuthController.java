@@ -7,6 +7,7 @@ import com.aimlab.dto.oauth.OAuthLoginDto;
 import com.aimlab.common.security.oauth.OAuthServerType;
 import com.aimlab.service.OAuthService;
 import com.aimlab.util.CookieUtil;
+import com.aimlab.util.ResponseUtil;
 import com.aimlab.util.SecurityUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -41,10 +42,11 @@ public class OAuthController {
         return ResponseEntity
                 .ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(LoginDto.Response.builder()
+                .body(ResponseUtil.success(
+                        LoginDto.Response.builder()
                         .userId(user.getUserId())
                         .userNickname(user.getUserNickname())
                         .userEmail(user.getUserEmail())
-                        .accessToken(tokenDto.getAccessToken()).build());
+                        .accessToken(tokenDto.getAccessToken()).build()));
     }
 }

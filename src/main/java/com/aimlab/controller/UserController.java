@@ -1,8 +1,8 @@
 package com.aimlab.controller;
 
-import com.aimlab.common.ApiResponse;
 import com.aimlab.dto.user.DuplicateCheckDto;
 import com.aimlab.service.UserService;
+import com.aimlab.util.ResponseUtil;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class UserController {
 
         return ResponseEntity
                 .ok()
-                .body(ApiResponse.success(DuplicateCheckDto.Response.builder()
+                .body(ResponseUtil.success(DuplicateCheckDto.Response.builder()
                         .isExist(isExist).build()));
     }
 
@@ -42,7 +42,7 @@ public class UserController {
 
         return ResponseEntity
                 .ok()
-                .body(ApiResponse.success(DuplicateCheckDto.Response.builder()
+                .body(ResponseUtil.success(DuplicateCheckDto.Response.builder()
                         .isExist(isExist).build()));
     }
 }

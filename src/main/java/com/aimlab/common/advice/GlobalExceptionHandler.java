@@ -1,8 +1,8 @@
 package com.aimlab.common.advice;
 
-import com.aimlab.common.ApiResponse;
 import com.aimlab.common.exception.ErrorCode;
 import com.aimlab.common.exception.CustomException;
+import com.aimlab.util.ResponseUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -57,13 +57,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleRuntimeException(RuntimeException exception){
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.error(exception));
+                .body(ResponseUtil.error(exception));
     }
 
 
     private ResponseEntity<?> getErrorResponse(ErrorCode errorCode){
         return ResponseEntity
                 .status(errorCode.getHttpStatus())
-                .body(ApiResponse.fail(errorCode));
+                .body(ResponseUtil.fail(errorCode));
     }
 }
