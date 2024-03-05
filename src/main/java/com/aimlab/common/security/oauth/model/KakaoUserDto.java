@@ -10,7 +10,18 @@ import lombok.Setter;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class KakaoUserDto implements OAuthUserDto{
     private Long id;
-    private String email;
+    private KakaoAccount kakaoAccount;
+
+    @Getter
+    @Setter
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class KakaoAccount{
+        private boolean hasEmail;
+        private boolean emailNeedsAgreement;
+        private boolean isEmailValid;
+        private boolean isEmailVerified;
+        private String email;
+    }
 
     @Override
     public String getOAuthId() {
@@ -19,6 +30,6 @@ public class KakaoUserDto implements OAuthUserDto{
 
     @Override
     public String getEmail(){
-        return email;
+        return kakaoAccount.email;
     }
 }

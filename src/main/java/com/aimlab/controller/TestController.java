@@ -1,8 +1,8 @@
 package com.aimlab.controller;
 
-import com.aimlab.common.ApiResponse;
 import com.aimlab.entity.TestEntity;
 import com.aimlab.service.TestService;
+import com.aimlab.util.ResponseUtil;
 import com.aimlab.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class TestController {
 
         return ResponseEntity
                 .ok()
-                .body(ApiResponse.success(entity));
+                .body(ResponseUtil.success(entity));
     }
 
     @GetMapping("whoareyou")
@@ -31,6 +31,6 @@ public class TestController {
         String userId = SecurityUtil.getCurrentUserId().orElseThrow(() -> new AuthorizationServiceException("인증정보를 확인할 수 없습니다"));
         return ResponseEntity
                 .ok()
-                .body(ApiResponse.success("you are " + userId));
+                .body(ResponseUtil.success("you are " + userId));
     }
 }

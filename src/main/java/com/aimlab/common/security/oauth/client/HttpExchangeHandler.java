@@ -13,8 +13,9 @@ public interface HttpExchangeHandler {
     @PostExchange(url = "https://kauth.kakao.com/oauth/token", contentType = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     KakaoTokenDto fetchKakaoAccessToken(@RequestParam MultiValueMap<String, String> params);
 
-    @PostExchange(url = "https://kapi.kakao.com/v2/user/me", contentType = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    KakaoUserDto fetchKakaoUser(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String accessToken);
+    @GetExchange(url = "https://kapi.kakao.com/v2/user/me")
+    KakaoUserDto fetchKakaoUser(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String accessToken,
+                                @RequestParam(name = "property_keys") String propertyKeys);
 
     @GetExchange(url = "https://nid.naver.com/oauth2.0/token")
     NaverTokenDto fetchNaverAccessToken(@RequestParam MultiValueMap<String, String> params);

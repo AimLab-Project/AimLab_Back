@@ -21,13 +21,6 @@ public class KakaoOAuthClient implements OAuthClient{
         return OAuthServerType.KAKAO;
     }
 
-    /*
-    String url = "https://kauth.kakao.com/oauth/authorize" +
-                "?client_id=fd39b6ae7f9dbd9c69fe774307150d54" +
-                "&redirect_uri=http://localhost:8080/kakao/callback" +
-                "&response_type=code" +
-                "&scope=account_email";
-     */
     @Override
     public String getLoginRedirectUri() {
         return UriComponentsBuilder.fromUriString("https://kauth.kakao.com/oauth/authorize")
@@ -46,7 +39,7 @@ public class KakaoOAuthClient implements OAuthClient{
         String accessToken = tokenInfo.getTokenType() + " " + tokenInfo.getAccessToken();
 
         // 3. 사용자 정보를 얻어 OAuthUser 엔티티를 리턴
-        return httpExchangeHandler.fetchKakaoUser(accessToken);
+        return httpExchangeHandler.fetchKakaoUser(accessToken, "[\"kakao_account.email\"]");
     }
 
     private MultiValueMap<String, String> getParams(String code) {

@@ -1,7 +1,7 @@
 package com.aimlab.common.security;
 
-import com.aimlab.common.ApiResponse;
 import com.aimlab.common.exception.ErrorCode;
+import com.aimlab.util.ResponseUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +26,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         ObjectMapper objectMapper = new ObjectMapper();
         PrintWriter writer = response.getWriter();
-        writer.println(objectMapper.writeValueAsString(ApiResponse.fail(ErrorCode.INVALID_TOKEN)));
+        writer.println(objectMapper.writeValueAsString(ResponseUtil.fail(ErrorCode.INVALID_TOKEN)));
     }
 }
