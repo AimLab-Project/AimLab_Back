@@ -19,7 +19,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "인증/인가")
+@Tag(name = "2. 인증/인가")
 @RestController
 @RequiredArgsConstructor
 public class AuthController {

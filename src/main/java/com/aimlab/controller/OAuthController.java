@@ -10,6 +10,8 @@ import com.aimlab.service.OAuthService;
 import com.aimlab.util.CookieUtil;
 import com.aimlab.util.ResponseUtil;
 import com.aimlab.util.SecurityUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
+@Tag(name = "3. 소셜 로그인")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/oauth")
@@ -28,6 +31,7 @@ public class OAuthController {
     /**
      * 소셜 로그인 화면 redirect 요청
      */
+    @Operation(summary = "소셜 로그인 redirect uri 요청", description = "각 소셜로그인 서비스의 로그인 화면으로 이동하기 위한 redirect uri 제공 엔드포인트")
     @GetMapping("/{oauthServerType}")
     public ResponseEntity<?> sendRedirectToOAuthLoginPage(
             @PathVariable OAuthServerType oauthServerType,
@@ -40,6 +44,7 @@ public class OAuthController {
     /**
      * 소셜 로그인 요청 (인가 코드 전달)
      */
+    @Operation(summary = "소셜 로그인", description = "소셜 로그인 엔드포인트(인가 코드, 소셜 타입 필요)")
     @PostMapping("/login/{oauthServerType}")
     public ResponseEntity<SuccessResponse<LoginDto.Response>> oauthLogin(
             @PathVariable OAuthServerType oauthServerType,
