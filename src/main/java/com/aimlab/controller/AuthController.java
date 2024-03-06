@@ -3,6 +3,7 @@ package com.aimlab.controller;
 import com.aimlab.common.exception.ErrorCode;
 import com.aimlab.common.exception.CustomException;
 import com.aimlab.common.security.UserPrincipal;
+import com.aimlab.dto.SuccessResponse;
 import com.aimlab.dto.authenticate.*;
 import com.aimlab.service.AuthService;
 import com.aimlab.service.MailVerificationService;
@@ -31,7 +32,9 @@ public class AuthController {
      */
     @Operation(summary = "일반 로그인", description = "일반 회원가입 유저의 로그인 엔드포인트")
     @PostMapping("/login")
-    public ResponseEntity<?> authorize(@Valid @RequestBody LoginDto.Request request){
+    public ResponseEntity<SuccessResponse<LoginDto.Response>> authorize(
+            @Valid @RequestBody LoginDto.Request request){
+
         TokenDto tokenDto = authService.login(request.getUserEmail(), request.getUserPassword());
 
         UserPrincipal user = SecurityUtil.getCurrentUser().orElseThrow();
@@ -52,7 +55,9 @@ public class AuthController {
      */
     @Operation(summary = "일반 회원가입", description = "일반 회원가입 엔드포인트")
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@Valid @RequestBody SignUpDto.Request request){
+    public ResponseEntity<SuccessResponse<SignUpDto.Response>> signup(
+            @Valid @RequestBody SignUpDto.Request request){
+
         TokenDto tokenDto = authService.signup(request);
 
         ResponseCookie cookie = CookieUtil.getNewCookie("refresh_token", tokenDto.getRefreshToken(), 60*60*24*30);
@@ -72,7 +77,9 @@ public class AuthController {
      */
     @Operation(summary = "Token 재발급", description = "Access Token, Refresh Token 재발급 엔드포인트")
     @PostMapping("/token/refresh")
-    public ResponseEntity<?> refreshAccessToken(@CookieValue(name = "refresh_token", required = true) String refreshToken ){
+    public ResponseEntity<SuccessResponse<TokenDto.Response>> refreshAccessToken(
+            @CookieValue(name = "refresh_token", required = true) String refreshToken ){
+
         if(refreshToken == null || refreshToken.isEmpty()){
             throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
@@ -95,7 +102,9 @@ public class AuthController {
      */
     @Operation(summary = "이메일 인증번호 발급", description = "인증번호를 이메일로 발급하는 엔드포인트")
     @PostMapping("/email/verification")
-    public ResponseEntity<?> sendEmailVerificationCode(@Valid @RequestBody EmailVerificationDto.Request request){
+    public ResponseEntity<SuccessResponse<EmailVerificationDto.Response>> sendEmailVerificationCode(
+            @Valid @RequestBody EmailVerificationDto.Request request){
+
         String key = mailVerificationService.createVerification(request.getUserEmail());
 
         return ResponseEntity
@@ -110,7 +119,9 @@ public class AuthController {
      */
     @Operation(summary = "인증번호 확인", description = "이메일에서 확인한 인증번호를 확인하는 엔드포인트")
     @PostMapping("/email/verification/confirm")
-    public ResponseEntity<?> verificateCode(@Valid @RequestBody EmailVerificationConfirmDto.Request request){
+    public ResponseEntity<SuccessResponse<EmailVerificationConfirmDto.Response>> verificateCode(
+            @Valid @RequestBody EmailVerificationConfirmDto.Request request){
+
         mailVerificationService.confirmVerification(
                 request.getKey(),
                 request.getUserEmail(),

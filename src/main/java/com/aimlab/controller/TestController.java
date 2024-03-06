@@ -1,5 +1,6 @@
 package com.aimlab.controller;
 
+import com.aimlab.dto.SuccessResponse;
 import com.aimlab.entity.TestEntity;
 import com.aimlab.service.TestService;
 import com.aimlab.util.ResponseUtil;
@@ -18,7 +19,7 @@ public class TestController {
     private final TestService service;
 
     @GetMapping("/test")
-    public ResponseEntity<?> testApi(){
+    public ResponseEntity<SuccessResponse<TestEntity>> testApi(){
         TestEntity entity = service.getTestData();
 
         return ResponseEntity
@@ -27,7 +28,7 @@ public class TestController {
     }
 
     @GetMapping("whoareyou")
-    public ResponseEntity<?> whoareyou(){
+    public ResponseEntity<SuccessResponse<String>> whoareyou(){
         String userId = SecurityUtil.getCurrentUserId().orElseThrow(() -> new AuthorizationServiceException("인증정보를 확인할 수 없습니다"));
         return ResponseEntity
                 .ok()
