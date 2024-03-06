@@ -1,6 +1,7 @@
 package com.aimlab.controller;
 
 import com.aimlab.common.security.UserPrincipal;
+import com.aimlab.dto.SuccessResponse;
 import com.aimlab.dto.authenticate.LoginDto;
 import com.aimlab.dto.authenticate.TokenDto;
 import com.aimlab.dto.oauth.OAuthLoginDto;
@@ -24,15 +25,26 @@ import java.io.IOException;
 public class OAuthController {
     private final OAuthService oAuthService;
 
+    /**
+     * 소셜 로그인 화면 redirect 요청
+     */
     @GetMapping("/{oauthServerType}")
-    public ResponseEntity<?> sendRedirectToOAuthLoginPage(@PathVariable OAuthServerType oauthServerType, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> sendRedirectToOAuthLoginPage(
+            @PathVariable OAuthServerType oauthServerType,
+            HttpServletResponse response) throws IOException {
+
         response.sendRedirect(oAuthService.getLoginRedirectUri(oauthServerType));
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 소셜 로그인 요청 (인가 코드 전달)
+     */
     @PostMapping("/login/{oauthServerType}")
-    public ResponseEntity<?> oauthLogin(@PathVariable OAuthServerType oauthServerType,
-                                        @RequestBody OAuthLoginDto.Request request){
+    public ResponseEntity<SuccessResponse<LoginDto.Response>> oauthLogin(
+            @PathVariable OAuthServerType oauthServerType,
+            @RequestBody OAuthLoginDto.Request request){
+
         TokenDto tokenDto = oAuthService.authenticate(oauthServerType, request.getCode());
 
         UserPrincipal user = SecurityUtil.getCurrentUser().orElseThrow();

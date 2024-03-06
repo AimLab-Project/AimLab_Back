@@ -1,5 +1,6 @@
 package com.aimlab.controller;
 
+import com.aimlab.dto.SuccessResponse;
 import com.aimlab.dto.user.DuplicateCheckDto;
 import com.aimlab.service.UserService;
 import com.aimlab.util.ResponseUtil;
@@ -23,7 +24,9 @@ public class UserController {
      * @param email 이메일
      */
     @GetMapping("/email/{email}")
-    public ResponseEntity<?> checkDuplicateEmail(@PathVariable("email") @Email String email){
+    public ResponseEntity<SuccessResponse<DuplicateCheckDto.Response>> checkDuplicateEmail(
+            @PathVariable("email") @Email String email){
+
         boolean isExist = userService.isEmailExist(email);
 
         return ResponseEntity
@@ -37,7 +40,9 @@ public class UserController {
      * @param nickname 닉네임
      */
     @GetMapping("/nickname/{nickname}")
-    public ResponseEntity<?> checkDuplicateNickname(@PathVariable("nickname") @NotBlank String nickname){
+    public ResponseEntity<SuccessResponse<DuplicateCheckDto.Response>> checkDuplicateNickname(
+            @PathVariable("nickname") @NotBlank String nickname){
+
         boolean isExist = userService.isNicknameExist(nickname);
 
         return ResponseEntity
