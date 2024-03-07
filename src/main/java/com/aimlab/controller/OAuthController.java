@@ -2,8 +2,8 @@ package com.aimlab.controller;
 
 import com.aimlab.common.security.UserPrincipal;
 import com.aimlab.dto.SuccessResponse;
-import com.aimlab.dto.authenticate.LoginDto;
-import com.aimlab.dto.authenticate.TokenDto;
+import com.aimlab.dto.auth.LoginDto;
+import com.aimlab.dto.auth.TokenDto;
 import com.aimlab.dto.oauth.OAuthLoginDto;
 import com.aimlab.common.security.oauth.OAuthServerType;
 import com.aimlab.service.OAuthService;

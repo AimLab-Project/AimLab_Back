@@ -1,4 +1,4 @@
-package com.aimlab.dto.authenticate;
+package com.aimlab.dto.auth;
 
 import com.aimlab.dto.RequestDto;
 import com.aimlab.dto.ResponseDto;
@@ -8,19 +8,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-public class EmailVerificationConfirmDto {
+public class EmailVerificationDto {
     @Getter
     @Setter
     public static class Request implements RequestDto {
-        @NotBlank
-        private String key;
-
         @Email
         @NotBlank
         private String userEmail;
-
-        @NotBlank
-        private String verificationCode;
     }
 
     @Getter

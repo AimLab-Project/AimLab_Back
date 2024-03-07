@@ -1,4 +1,4 @@
-package com.aimlab.dto.authenticate;
+package com.aimlab.dto.auth;
 
 import com.aimlab.dto.ResponseDto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;

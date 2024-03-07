@@ -1,7 +1,7 @@
 package com.aimlab.common.security;
 
 import com.aimlab.common.config.AppProperties;
-import com.aimlab.dto.authenticate.TokenDto;
+import com.aimlab.dto.auth.TokenDto;
 import com.aimlab.repository.RefreshTokenRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
