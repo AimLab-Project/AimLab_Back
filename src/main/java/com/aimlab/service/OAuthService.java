@@ -5,7 +5,7 @@ import com.aimlab.common.security.UserPrincipal;
 import com.aimlab.common.security.oauth.client.OAuthClientFactory;
 import com.aimlab.common.security.oauth.OAuthServerType;
 import com.aimlab.common.security.oauth.model.OAuthUserDto;
-import com.aimlab.dto.authenticate.TokenDto;
+import com.aimlab.dto.auth.TokenDto;
 import com.aimlab.entity.Authority;
 import com.aimlab.entity.OAuthUser;
 import com.aimlab.entity.User;

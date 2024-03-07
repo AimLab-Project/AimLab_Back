@@ -4,7 +4,7 @@ import com.aimlab.common.exception.ErrorCode;
 import com.aimlab.common.exception.CustomException;
 import com.aimlab.common.security.UserPrincipal;
 import com.aimlab.dto.SuccessResponse;
-import com.aimlab.dto.authenticate.*;
+import com.aimlab.dto.auth.*;
 import com.aimlab.service.AuthService;
 import com.aimlab.service.MailVerificationService;
 import com.aimlab.util.CookieUtil;

@@ -1,13 +1,15 @@
-package com.aimlab.dto.authenticate;
+package com.aimlab.dto.auth;
 
 import com.aimlab.dto.RequestDto;
 import com.aimlab.dto.ResponseDto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-public class LoginDto {
+public class SignUpDto {
 
     @Getter
     @Setter
@@ -20,13 +22,19 @@ public class LoginDto {
         @NotBlank
         @Size(min = 3, max = 100)
         private String userPassword;
+
+        @NotBlank
+        @Size(min = 3, max = 50)
+        private String userNickname;
+
+        @NotBlank
+        private String key;
     }
 
     @Getter
     @Setter
     @Builder
     public static class Response implements ResponseDto {
-        private String userId;
         private String userEmail;
         private String userNickname;
         private String accessToken;

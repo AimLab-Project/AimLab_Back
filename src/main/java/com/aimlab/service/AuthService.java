@@ -1,8 +1,8 @@
 package com.aimlab.service;
 
 import com.aimlab.common.exception.ErrorCode;
-import com.aimlab.dto.authenticate.SignUpDto;
-import com.aimlab.dto.authenticate.TokenDto;
+import com.aimlab.dto.auth.SignUpDto;
+import com.aimlab.dto.auth.TokenDto;
 import com.aimlab.entity.Authority;
 import com.aimlab.entity.RefreshTokenEntity;
 import com.aimlab.entity.User;
