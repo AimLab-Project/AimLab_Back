@@ -63,15 +63,12 @@ public class AuthService {
                     .userEmail(email)
                     .userPassword(passwordEncoder.encode(request.getUserPassword()))
                     .userNickname(request.getUserNickname())
-                    .authority(Authority.ROLE_USER)
-                    .createdAt(LocalDateTime.now())
-                    .modifiedAt(LocalDateTime.now()).build();
+                    .authority(Authority.ROLE_USER).build();
             userRepository.save(user);
         } else {
             user = optionalUser.get();
             user.setUserPassword(passwordEncoder.encode(request.getUserPassword()));
             user.setUserNickname(request.getUserNickname());
-            user.setModifiedAt(LocalDateTime.now());
             userRepository.save(user);
         }
 

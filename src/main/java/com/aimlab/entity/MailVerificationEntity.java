@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "email_verification")
-public class MailVerificationEntity {
+public class MailVerificationEntity extends BaseTime{
     @Id
     @Column(name = "verification_key")
     @GeneratedValue(strategy = GenerationType.UUID)

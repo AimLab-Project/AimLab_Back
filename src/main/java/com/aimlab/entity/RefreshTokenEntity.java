@@ -20,7 +20,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RefreshTokenEntity {
+public class RefreshTokenEntity extends BaseTime{
     @Id
     private UUID userId;
 

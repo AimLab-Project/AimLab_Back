@@ -3,7 +3,6 @@ package com.aimlab.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -21,7 +20,7 @@ import java.util.UUID;
             @UniqueConstraint(name = "nickname_unique", columnNames = "user_nickname")
         }
 )
-public class User {
+public class User extends BaseTime{
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -39,10 +38,4 @@ public class User {
     @Column(name = "authority")
     @Enumerated(EnumType.STRING)
     private Authority authority;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "modified_at")
-    private LocalDateTime modifiedAt;
 }

@@ -44,14 +44,11 @@ public class OAuthService {
                     .orElseGet(() -> userRepository.save(User.builder()
                             .userEmail(fetchedSocialUserInfo.getEmail())
                             .userNickname("GUEST" + fetchedSocialUserInfo.getOAuthId())
-                            .authority(Authority.ROLE_USER)
-                            .createdAt(currentTime)
-                            .modifiedAt(currentTime).build()));
+                            .authority(Authority.ROLE_USER).build()));
 
             oAuthUserRepository.save(OAuthUser.builder()
                     .oauthId(fetchedSocialUserInfo.getOAuthId())
                     .oauthServerType(serverType)
-                    .createdAt(currentTime)
                     .user(user).build());
         } else {
             user = socialUser.get().getUser();

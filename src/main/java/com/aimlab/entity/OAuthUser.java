@@ -4,8 +4,6 @@ import com.aimlab.common.security.oauth.OAuthServerType;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @Builder
@@ -17,7 +15,7 @@ import java.time.LocalDateTime;
             @UniqueConstraint(name = "oauth_user_pk", columnNames = "oauth_user_id")
         }
 )
-public class OAuthUser {
+public class OAuthUser extends BaseTime{
     @Id
     @Column(name = "oauth_user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +27,6 @@ public class OAuthUser {
     @Enumerated(EnumType.STRING)
     @Column(name = "server_type")
     private OAuthServerType oauthServerType;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
