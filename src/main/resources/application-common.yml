@@ -24,6 +24,11 @@ spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
 
+  # security filter 순서
+  security:
+    filter:
+      order: 10
+
 # Open Api 문서
 springdoc:
   swagger-ui:

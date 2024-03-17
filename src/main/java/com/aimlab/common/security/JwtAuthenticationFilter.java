@@ -34,10 +34,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            logger.info("SecurityContext에 '{}' 인증 정보를 저장했습니다, uri : {}", authentication.getName(), requestURI);
+            logger.debug("SecurityContext에 '{}' 인증 정보를 저장했습니다, uri : {}", authentication.getName(), requestURI);
 
         } else {
-            logger.info("유효한 jwt 토큰이 없습니다, uri : {}", requestURI);
+            logger.debug("유효한 jwt 토큰이 없습니다, uri : {}", requestURI);
         }
 
         filterChain.doFilter(request, response);
