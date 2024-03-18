@@ -26,6 +26,7 @@ spring:
           starttls:
             enable: true
             required: true
+        debug: false
 
 # OAuth 시크릿 정보
 app:

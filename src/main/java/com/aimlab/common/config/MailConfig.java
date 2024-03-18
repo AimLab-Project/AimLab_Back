@@ -40,6 +40,9 @@ public class MailConfig {
     @Value("${spring.mail.properties.mail.smtp.writetimeout}")
     private String mailServerWriteTimeout;
 
+    @Value("${spring.mail.properties.mail.debug}")
+    private boolean debug;
+
     @Bean
     public JavaMailSender javaMailSender(){
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
@@ -59,7 +62,7 @@ public class MailConfig {
         properties.put("mail.smtp.timeout", mailServerTimeout);
         properties.put("mail.smtp.connectiontimeout", mailServerConnectionTimeout);
         properties.put("mail.smtp.writetimeout", mailServerWriteTimeout);
-        properties.put("mail.debug", "true");
+        properties.put("mail.debug", debug);
 
         return javaMailSender;
     }
