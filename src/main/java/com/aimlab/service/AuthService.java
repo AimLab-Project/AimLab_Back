@@ -109,12 +109,11 @@ public class AuthService {
         UUID userId = UUID.fromString(SecurityUtil.getCurrentUserId().orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_EXIST_USER)
         ));
-        RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByUserId(userId)
-                .orElse(new RefreshTokenEntity());
 
-        refreshTokenEntity.setUserId(userId);
-        refreshTokenEntity.setRefreshToken(tokenDto.getRefreshToken());
-        refreshTokenEntity.setIssueAt(LocalDateTime.now());
+        RefreshTokenEntity refreshTokenEntity = RefreshTokenEntity.builder()
+                .userId(userId)
+                .refreshToken(tokenDto.getRefreshToken())
+                .issueAt(LocalDateTime.now()).build();
 
         refreshTokenRepository.save(refreshTokenEntity);
         loginLogRepository.save(getNewLoginLog(userId));    // 로그인 로그 저장
