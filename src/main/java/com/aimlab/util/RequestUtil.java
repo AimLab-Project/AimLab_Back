@@ -1,15 +1,27 @@
 package com.aimlab.util;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.UUID;
 
 public class RequestUtil {
 
     /**
+     * Thread Local에서 Request 객체 추출
+     */
+    public static HttpServletRequest getRequest(){
+        return (HttpServletRequest) RequestContextHolder
+                .currentRequestAttributes().resolveReference(RequestAttributes.REFERENCE_REQUEST);
+    }
+
+    /**
      * Request Id 추출
      */
-    public static String getRequestId(HttpServletRequest request){
+    public static String getRequestId(){
+        HttpServletRequest request = RequestUtil.getRequest();
+
         String requestId = request.getHeader("X-RequestID"); // nginx가 생성한 request id 먼저 검사
         if(requestId == null){
             requestId = UUID.randomUUID().toString();   // 없으면 랜덤 id 생성
@@ -20,7 +32,8 @@ public class RequestUtil {
     /**
      * Client IP 추출
      */
-    public static String getRequestIp(HttpServletRequest request){
+    public static String getRequestIp(){
+        HttpServletRequest request = RequestUtil.getRequest();
         String ip = null;
 
         ip = request.getHeader("X-Forwarded-For");
@@ -54,5 +67,18 @@ public class RequestUtil {
         }
 
         return ip;
+    }
+
+    /**
+     * Client의 User Agent 추출
+     */
+    public static String getUserAgent(){
+        HttpServletRequest request = RequestUtil.getRequest();
+
+        String userAgent = request.getHeader("User-Agent");
+        if(userAgent == null){
+            userAgent = "";
+        }
+        return userAgent;
     }
 }

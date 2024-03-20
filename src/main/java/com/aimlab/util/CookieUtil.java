@@ -20,4 +20,15 @@ public class CookieUtil {
                 .maxAge(maxAge)
                 .build();
     }
+
+    public static ResponseCookie getNewCookie(String name, String value, long maxAge, boolean httpOnly){
+        return ResponseCookie
+                .from(name, value)
+                .path("/")
+                .httpOnly(httpOnly)
+                .secure(true)
+                .sameSite("none")
+                .maxAge(maxAge)
+                .build();
+    }
 }

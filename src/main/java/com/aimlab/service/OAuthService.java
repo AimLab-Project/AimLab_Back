@@ -7,10 +7,13 @@ import com.aimlab.common.security.oauth.OAuthServerType;
 import com.aimlab.common.security.oauth.model.OAuthUserDto;
 import com.aimlab.dto.auth.TokenDto;
 import com.aimlab.entity.Authority;
+import com.aimlab.entity.LoginLog;
 import com.aimlab.entity.OAuthUser;
 import com.aimlab.entity.User;
+import com.aimlab.repository.LoginLogRepository;
 import com.aimlab.repository.OAuthUserRepository;
 import com.aimlab.repository.UserRepository;
+import com.aimlab.util.RequestUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Transactional
@@ -28,6 +32,7 @@ public class OAuthService {
     private final OAuthClientFactory oAuthClientFactory;
     private final OAuthUserRepository oAuthUserRepository;
     private final UserRepository userRepository;
+    private final LoginLogRepository loginLogRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     public TokenDto authenticate(OAuthServerType serverType, String code){
@@ -59,6 +64,8 @@ public class OAuthService {
                 UsernamePasswordAuthenticationToken.authenticated(UserPrincipal.create(user), null, null);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        
+        loginLogRepository.save(getNewLoginLog(user.getUserId(), serverType)); // 로그인 로그 저장
 
         // 4. JWT Token 발급
         return jwtTokenProvider.createTokens(authentication);
@@ -66,5 +73,17 @@ public class OAuthService {
 
     public String getLoginRedirectUri(OAuthServerType serverType){
         return oAuthClientFactory.getLoginRedirectUri(serverType);
+    }
+
+    /**
+     * 성공 상태의 새로운 로그인 로그 엔티티 반환
+     */
+    private LoginLog getNewLoginLog(UUID userId, OAuthServerType loginType){
+        return LoginLog.builder()
+                .user(userRepository.getReferenceById(userId))
+                .loginIp(RequestUtil.getRequestIp())
+                .userAgent(RequestUtil.getUserAgent())
+                .loginType(loginType)
+                .isSuccess(true).build();
     }
 }

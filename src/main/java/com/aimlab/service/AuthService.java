@@ -1,16 +1,20 @@
 package com.aimlab.service;
 
 import com.aimlab.common.exception.ErrorCode;
+import com.aimlab.common.security.oauth.OAuthServerType;
 import com.aimlab.dto.auth.SignUpDto;
 import com.aimlab.dto.auth.TokenDto;
 import com.aimlab.entity.Authority;
+import com.aimlab.entity.LoginLog;
 import com.aimlab.entity.RefreshTokenEntity;
 import com.aimlab.entity.User;
 import com.aimlab.common.exception.CustomException;
 import com.aimlab.common.security.JwtTokenProvider;
+import com.aimlab.repository.LoginLogRepository;
 import com.aimlab.repository.RefreshTokenRepository;
 import com.aimlab.repository.UserRepository;
 import com.aimlab.common.security.UserPrincipal;
+import com.aimlab.util.RequestUtil;
 import com.aimlab.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -34,9 +38,13 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final LoginLogRepository loginLogRepository;
+
     private final PasswordEncoder passwordEncoder;
+
     private final AuthenticationProvider authenticationProvider;
     private final JwtTokenProvider jwtTokenProvider;
+
     private final MailVerificationService mailVerificationService;
 
     /**
@@ -109,6 +117,7 @@ public class AuthService {
         refreshTokenEntity.setIssueAt(LocalDateTime.now());
 
         refreshTokenRepository.save(refreshTokenEntity);
+        loginLogRepository.save(getNewLoginLog(userId));    // 로그인 로그 저장
 
         return tokenDto;
     }
@@ -148,5 +157,17 @@ public class AuthService {
         refreshTokenRepository.save(refreshTokenEntity);
 
         return newTokens;
+    }
+
+    /**
+     * 성공 상태의 새로운 로그인 로그 엔티티 반환 (로그인 타입 : Local)
+     */
+    private LoginLog getNewLoginLog(UUID userId){
+        return LoginLog.builder()
+                .user(userRepository.getReferenceById(userId))
+                .loginIp(RequestUtil.getRequestIp())
+                .userAgent(RequestUtil.getUserAgent())
+                .loginType(OAuthServerType.LOCAL)
+                .isSuccess(true).build();
     }
 }

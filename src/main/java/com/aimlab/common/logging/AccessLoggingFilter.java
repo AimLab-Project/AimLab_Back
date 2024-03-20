@@ -40,12 +40,12 @@ public class AccessLoggingFilter implements Filter {
 //        ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
 
         // Request Id 등록
-        String requestId = RequestUtil.getRequestId(request);
+        String requestId = RequestUtil.getRequestId();
         MDC.put("request_id", requestId);
 
         // Request Logging
         String uri = request.getRequestURI();
-        String ip = RequestUtil.getRequestIp(request);
+        String ip = RequestUtil.getRequestIp();
         String method = request.getMethod();
 
         chain.doFilter(requestWrapper, response);
@@ -54,7 +54,7 @@ public class AccessLoggingFilter implements Filter {
 
         long elapsedTime = System.currentTimeMillis() - startTime;
 
-        logger.info("[{}] [{}] [{}] - [{}] {}ms", method, uri, ip, status, elapsedTime);
+        logger.info("[{}] [{}] [{}] [{}] - [{}] {}ms", requestId, method, uri, ip, status, elapsedTime);
 
         MDC.clear();
     }

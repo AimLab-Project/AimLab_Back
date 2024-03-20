@@ -39,11 +39,16 @@ public class AuthController {
 
         UserPrincipal user = SecurityUtil.getCurrentUser().orElseThrow();
 
-        ResponseCookie cookie = CookieUtil.getNewCookie("refresh_token", tokenDto.getRefreshToken(), 60*60*24*30);
+        // Refresh Token Cookie (보관 기간 : 30일)
+        ResponseCookie refreshTokenCookie = CookieUtil.getNewCookie("refresh_token", tokenDto.getRefreshToken(), 60*60*24*30);
+
+        // 마지막 로그인 방법 (보관 기간 : 356일, not http only)
+        ResponseCookie lastLoginMethodCookie = CookieUtil.getNewCookie("last_login_method", "", 60*60*24*365, false);
 
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
+                .header(HttpHeaders.SET_COOKIE, lastLoginMethodCookie.toString())
                 .body(ResponseUtil.success(LoginDto.Response.builder()
                         .userId(user.getUserId())
                         .userEmail(user.getUserEmail())
