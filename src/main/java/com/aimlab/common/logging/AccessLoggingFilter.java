@@ -54,7 +54,7 @@ public class AccessLoggingFilter implements Filter {
 
         long elapsedTime = System.currentTimeMillis() - startTime;
 
-        logger.info("[{}] [{}] [{}] [{}] - [{}] {}ms", requestId, method, uri, ip, status, elapsedTime);
+        logger.info("[{}] [{}] [{}] [{}] - [{}] {}ms", requestId, ip, method, uri, status, elapsedTime);
 
         MDC.clear();
     }
