@@ -54,33 +54,30 @@ public class AuthService {
     @Transactional
     public TokenDto signup(SignUpDto.Request request){
         String email = request.getUserEmail();
+        String password = request.getUserPassword();
+        String nickname = request.getUserNickname();
+        String authKey = request.getKey();
 
-        // 1. 이메일 사용여부 확인(일반 회원가입 여부만 확인, 비밀번호 유무로 판단)
+        // 1. 인증 여부 확인
+        mailVerificationService.checkConfirmedVerification(authKey, email);
+
+        // 2. 이메일 사용여부 확인(일반 회원가입 여부만 확인, 비밀번호 유무로 판단)
         Optional<User> optionalUser = userRepository.findOneByUserEmail(email);
         if(optionalUser.isPresent() && optionalUser.get().getUserPassword() != null){
             throw new CustomException(ErrorCode.DUPLICATED_EMAIL);
         }
 
-        // 2. 인증 여부 확인
-        mailVerificationService.checkConfirmedVerification(request.getKey(), email);
-
-        // 3. 회원 생성 및 등록(새 회원 & 기존 소셜 회원)
-        User user;
-        if(optionalUser.isEmpty()){
-            user = User.builder()
+        // 3. 회원 생성 & 저장
+        User user = optionalUser.orElseGet(() -> User.builder()
                     .userEmail(email)
-                    .userPassword(passwordEncoder.encode(request.getUserPassword()))
-                    .userNickname(request.getUserNickname())
-                    .authority(Authority.ROLE_USER).build();
-            userRepository.save(user);
-        } else {
-            user = optionalUser.get();
-            user.setUserPassword(passwordEncoder.encode(request.getUserPassword()));
-            user.setUserNickname(request.getUserNickname());
-            userRepository.save(user);
-        }
+                    .authority(Authority.ROLE_USER).build());
+
+        user.setUserPassword(passwordEncoder.encode(password));
+        user.setUserNickname(nickname);
+        userRepository.save(user);
 
         Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(UserPrincipal.create(user), null, null);
+
         return jwtTokenProvider.createTokens(authentication);
     }
 

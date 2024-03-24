@@ -28,7 +28,7 @@ public class OAuthUser extends BaseTime{
     @Column(name = "server_type")
     private OAuthServerType oauthServerType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 }
