@@ -37,36 +37,34 @@ public class OAuthService {
         // 1. Authenticate code를 통해 OAuth Provider에게서 사용자 정보를 가져옴
         OAuthUserDto fetchedSocialUserInfo = oAuthClientFactory.fetch(serverType, code);
 
-        // 2. 가져온 사용자가 회원가입되어 있지 않으면 회원가입 시킨다.
+        // 2. 가져온 사용자가 회원가입되어 있지 않으면 회원가입 시킨다. (user -> oauthUser 순으로 생성)
+        User user = userRepository.findOneByUserEmail(fetchedSocialUserInfo.getEmail())
+                .orElseGet(() -> userRepository.save(User.builder()
+                        .userEmail(fetchedSocialUserInfo.getEmail())
+                        .authority(Authority.ROLE_USER).build()));
+
         OAuthUser socialUser = oAuthUserRepository.findByOauthIdAndOauthServerType(fetchedSocialUserInfo.getOAuthId(), serverType)
-                .orElseGet(() -> {  // 없으면 새로 생성
-                    User newUser = User.builder()
-                            .userEmail(fetchedSocialUserInfo.getEmail())
-                            .authority(Authority.ROLE_USER).build();
+                .orElseGet(() -> oAuthUserRepository.save(OAuthUser.builder()
+                        .oauthId(fetchedSocialUserInfo.getOAuthId())
+                        .oauthServerType(serverType)
+                        .user(user).build()));
 
-                    OAuthUser newOauthUser = OAuthUser.builder()
-                            .oauthId(fetchedSocialUserInfo.getOAuthId())
-                            .oauthServerType(serverType)
-                            .user(newUser).build();
+        // 3. 닉네임 설정
+        if(user.getUserNickname() == null || user.getUserNickname().isBlank()){
+            user.setUserNickname("GUEST" + String.format("%08d", socialUser.getOauthUserId()));
+            userRepository.save(user);
+        }
 
-                    userRepository.save(newUser);
-                    return oAuthUserRepository.save(newOauthUser);
-                });
-
-        // 닉네임 설정
-        User user = socialUser.getUser();
-        user.setUserNickname("GUEST" + String.format("%08d", socialUser.getOauthUserId()));
-        userRepository.save(user);
-
-        // 3. Authentication 객체 생성 후 ThreadLocal에 저장
+        // 4. Authentication 객체 생성 후 ThreadLocal에 저장
         Authentication authentication =
                 UsernamePasswordAuthenticationToken.authenticated(UserPrincipal.create(user), null, null);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        
-        loginLogRepository.save(getNewLoginLog(user.getUserId(), serverType)); // 로그인 로그 저장
 
-        // 4. JWT Token 발급
+        // 5. 로그인 로그 저장
+        loginLogRepository.save(getNewLoginLog(user.getUserId(), serverType));
+
+        // 6. JWT Token 발급
         return jwtTokenProvider.createTokens(authentication);
     }
 
