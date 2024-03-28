@@ -46,6 +46,24 @@ app:
       client-secret: ${GOOGLE_CLIENT_SECRET}
       redirect-uri: ${GOOGLE_REDIRECT_URI}
       scope: ${GOOGLE_SCOPE}
+  cors:
+    allowed-origins:
+      - localhost
+      - localhost:3000
+      - localhost:8080
+      - 127.0.0.1
+      - 127.0.0.1:3000
+      - 127.0.0.1:8080
+    allowed-methods:
+      - GET
+      - POST
+      - OPTION
+      - PATCH
+      - PUT
+      - DELETE
+    allowed-headers:
+      - Set-cookie
+      - Authorization
 
 # 실제 운영중인 서버의 Port 번호는 8080
 server:

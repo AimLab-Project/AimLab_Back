@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Getter
 @Configuration
 @ConfigurationProperties(prefix = "app")
@@ -12,6 +14,7 @@ public class AppProperties {
     private final Auth auth = new Auth();
     private final Mail mail = new Mail();
     private final Oauth oauth = new Oauth();
+    private final Cors cors = new Cors();
 
     @Getter
     @Setter
@@ -46,5 +49,13 @@ public class AppProperties {
             private String Scope;
             private String state;
         }
+    }
+
+    @Getter
+    @Setter
+    public static class Cors{
+        private List<String> allowedOrigins;
+        private List<String> allowedMethods;
+        private List<String> allowedHeaders;
     }
 }

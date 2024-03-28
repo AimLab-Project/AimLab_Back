@@ -3,6 +3,7 @@ package com.aimlab.controller;
 import com.aimlab.common.exception.ErrorCode;
 import com.aimlab.common.exception.CustomException;
 import com.aimlab.common.security.UserPrincipal;
+import com.aimlab.common.security.oauth.OAuthServerType;
 import com.aimlab.dto.SuccessResponse;
 import com.aimlab.dto.auth.*;
 import com.aimlab.service.AuthService;
@@ -43,7 +44,7 @@ public class AuthController {
         ResponseCookie refreshTokenCookie = CookieUtil.getNewCookie("refresh_token", tokenDto.getRefreshToken(), 60*60*24*30);
 
         // 마지막 로그인 방법 (보관 기간 : 356일, not http only)
-        ResponseCookie lastLoginMethodCookie = CookieUtil.getNewCookie("last_login_method", "", 60*60*24*365, false);
+        ResponseCookie lastLoginMethodCookie = CookieUtil.getNewCookie("last_login_method", OAuthServerType.LOCAL.toString().toLowerCase(), 60*60*24*365, false);
 
         return ResponseEntity
                 .ok()
