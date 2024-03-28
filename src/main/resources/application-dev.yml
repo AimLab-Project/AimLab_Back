@@ -57,7 +57,7 @@ app:
     allowed-methods:
       - GET
       - POST
-      - OPTION
+      - OPTIONS
       - PATCH
       - PUT
       - DELETE
