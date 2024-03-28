@@ -48,12 +48,12 @@ app:
       scope: ${GOOGLE_SCOPE}
   cors:
     allowed-origins:
-      - localhost
-      - localhost:3000
-      - localhost:8080
-      - 127.0.0.1
-      - 127.0.0.1:3000
-      - 127.0.0.1:8080
+      - http://localhost
+      - http://localhost:3000
+      - http://localhost:8080
+      - http://127.0.0.1
+      - http://127.0.0.1:3000
+      - http://127.0.0.1:8080
     allowed-methods:
       - GET
       - POST
@@ -62,8 +62,29 @@ app:
       - PUT
       - DELETE
     allowed-headers:
-      - Set-cookie
+      - Origin
+      - Accept
+      - Accept-Language
+      - Accept-Encoding
+      - Content-Type
+      - Access-Control-Request-Method
+      - Access-Control-Request-Headers
       - Authorization
+      - Cookie
+      - Set-cookie
+      - User-Agent
+      - Cache-Control
+      - Connection
+      - Referer
+      - X-Requested-With
+      - X-Forwarded-For
+      - Proxy-Client-IP
+      - WL-Proxy-Client-IP
+      - HTTP_CLIENT_IP
+      - HTTP_X_FORWARDED_FOR
+      - X-Real-IP
+      - X-RealIP
+      - REMOTE_ADDR
 
 # 배포된 개발 서버의 Port 번호는 8080
 server:
