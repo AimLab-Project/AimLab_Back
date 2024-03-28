@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -23,7 +24,7 @@ public class CorsConfig {
         corsConfiguration.setAllowedOrigins(appProperties.getCors().getAllowedOrigins());
         corsConfiguration.setAllowedMethods(appProperties.getCors().getAllowedMethods());
         corsConfiguration.setAllowedHeaders(appProperties.getCors().getAllowedHeaders());
-        corsConfiguration.setExposedHeaders(appProperties.getCors().getAllowedHeaders());
+        corsConfiguration.addExposedHeader(HttpHeaders.SET_COOKIE);
         corsConfiguration.setMaxAge(3600L);
 
         source.registerCorsConfiguration("/**", corsConfiguration);

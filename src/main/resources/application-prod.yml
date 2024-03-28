@@ -47,6 +47,8 @@ app:
       redirect-uri: ${GOOGLE_REDIRECT_URI}
       scope: ${GOOGLE_SCOPE}
   cors:
+    credential-cookie-domain: api.aimsharp.co.kr # 인증 관련 쿠키 (서버로 전송)
+    client-cookie-domain: .aimsharp.co.kr # 클라이언트 저장 쿠키 (클라이언트 사용)
     allowed-origins:
       - http://localhost
       - http://localhost:3000

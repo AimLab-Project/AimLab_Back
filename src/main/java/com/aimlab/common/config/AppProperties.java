@@ -54,6 +54,8 @@ public class AppProperties {
     @Getter
     @Setter
     public static class Cors{
+        private String credentialCookieDomain;
+        private String clientCookieDomain;
         private List<String> allowedOrigins;
         private List<String> allowedMethods;
         private List<String> allowedHeaders;

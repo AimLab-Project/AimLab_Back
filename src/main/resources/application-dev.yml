@@ -47,6 +47,8 @@ app:
       redirect-uri: ${GOOGLE_REDIRECT_URI}
       scope: ${GOOGLE_SCOPE}
   cors:
+    credential-cookie-domain: .aimsharp.co.kr
+    client-cookie-domain: localhost
     allowed-origins:
       - http://localhost
       - http://localhost:3000
