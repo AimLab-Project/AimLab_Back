@@ -1,4 +1,4 @@
-package com.aimlab.entity;
+package com.aimlab.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +15,6 @@ import java.util.UUID;
  */
 @Entity
 @Table(name = "user_refresh_token")
-@Setter
 @Getter
 @Builder
 @AllArgsConstructor
@@ -29,4 +28,12 @@ public class RefreshTokenEntity extends BaseTime{
 
     @Column(name = "issue_at")
     private LocalDateTime issueAt;
+
+    /**
+     * Setters
+     */
+    public void setNewToken(String refreshToken){
+        this.refreshToken = refreshToken;
+        this.issueAt = LocalDateTime.now();
+    }
 }

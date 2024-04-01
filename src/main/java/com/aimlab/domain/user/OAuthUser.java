@@ -1,11 +1,11 @@
-package com.aimlab.entity;
+package com.aimlab.domain.user;
 
 import com.aimlab.common.security.oauth.OAuthServerType;
+import com.aimlab.domain.BaseTime;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +15,7 @@ import lombok.*;
             @UniqueConstraint(name = "oauth_user_pk", columnNames = "oauth_user_id")
         }
 )
-public class OAuthUser extends BaseTime{
+public class OAuthUser extends BaseTime {
     @Id
     @Column(name = "oauth_user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

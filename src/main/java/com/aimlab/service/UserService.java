@@ -1,6 +1,6 @@
 package com.aimlab.service;
 
-import com.aimlab.entity.User;
+import com.aimlab.domain.user.User;
 import com.aimlab.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

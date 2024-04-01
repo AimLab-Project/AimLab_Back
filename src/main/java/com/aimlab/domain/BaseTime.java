@@ -1,4 +1,4 @@
-package com.aimlab.entity;
+package com.aimlab.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

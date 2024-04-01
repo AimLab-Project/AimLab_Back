@@ -1,7 +1,7 @@
 package com.aimlab.repository;
 
 import com.aimlab.common.security.oauth.OAuthServerType;
-import com.aimlab.entity.OAuthUser;
+import com.aimlab.domain.user.OAuthUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

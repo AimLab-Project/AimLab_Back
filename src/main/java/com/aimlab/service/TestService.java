@@ -1,6 +1,6 @@
 package com.aimlab.service;
 
-import com.aimlab.entity.TestEntity;
+import com.aimlab.domain.TestEntity;
 import com.aimlab.repository.TestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

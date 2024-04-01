@@ -4,10 +4,10 @@ import com.aimlab.common.exception.ErrorCode;
 import com.aimlab.common.security.oauth.OAuthServerType;
 import com.aimlab.dto.auth.SignUpDto;
 import com.aimlab.dto.auth.TokenDto;
-import com.aimlab.entity.Authority;
-import com.aimlab.entity.LoginLog;
-import com.aimlab.entity.RefreshTokenEntity;
-import com.aimlab.entity.User;
+import com.aimlab.domain.user.Authority;
+import com.aimlab.domain.user.LoginLog;
+import com.aimlab.domain.RefreshTokenEntity;
+import com.aimlab.domain.user.User;
 import com.aimlab.common.exception.CustomException;
 import com.aimlab.common.security.JwtTokenProvider;
 import com.aimlab.repository.LoginLogRepository;
@@ -125,31 +125,29 @@ public class AuthService {
      */
     @Transactional
     public TokenDto refreshTokens(String refreshToken){
-        CustomException exception = new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
 
         // 1. refreshToken 유효성 검사
         if(!jwtTokenProvider.validateToken(refreshToken)){
-            throw exception;
+            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
         // 2. UserId 추출
         Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken);
         String userId = ((UserPrincipal)authentication.getPrincipal()).getUserId();
 
-        // 3. DB에 저장된 RT와 비교 (다르면 삭제)
-        RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByUserId(UUID.fromString(userId))
-                .orElseThrow(() -> exception);
-        if(!refreshToken.equals(refreshTokenEntity.getRefreshToken())){
-            refreshTokenRepository.deleteByUserId(UUID.fromString(userId));
-            throw exception;
-        }
-
-        // 4. AT, RT 재발급
+        // 3. AT, RT 재발급
         TokenDto newTokens = jwtTokenProvider.createTokens(authentication);
 
+        // 4. DB에 저장된 RT와 비교 (다르면 삭제)
+        Optional<RefreshTokenEntity> optional = refreshTokenRepository.findByUserId(UUID.fromString(userId));
+        if(optional.isEmpty() || !optional.get().getRefreshToken().equals(refreshToken)){
+            refreshTokenRepository.deleteById(UUID.fromString(userId));
+            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
         // 5. 새로 발급한 RT 저장
-        refreshTokenEntity.setRefreshToken(newTokens.getRefreshToken());
-        refreshTokenEntity.setIssueAt(LocalDateTime.now());
+        RefreshTokenEntity refreshTokenEntity = optional.get();
+        refreshTokenEntity.setNewToken(refreshToken);
         refreshTokenRepository.save(refreshTokenEntity);
 
         return newTokens;

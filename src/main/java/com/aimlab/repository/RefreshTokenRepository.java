@@ -1,6 +1,6 @@
 package com.aimlab.repository;
 
-import com.aimlab.entity.RefreshTokenEntity;
+import com.aimlab.domain.RefreshTokenEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

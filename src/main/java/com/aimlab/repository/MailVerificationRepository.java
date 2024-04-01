@@ -1,6 +1,6 @@
 package com.aimlab.repository;
 
-import com.aimlab.entity.MailVerificationEntity;
+import com.aimlab.domain.MailVerificationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

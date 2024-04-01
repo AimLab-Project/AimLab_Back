@@ -1,6 +1,7 @@
-package com.aimlab.entity;
+package com.aimlab.domain.user;
 
 import com.aimlab.common.security.oauth.OAuthServerType;
+import com.aimlab.domain.BaseTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "login_log")
-public class LoginLog extends BaseTime{
+public class LoginLog extends BaseTime {
     @Id
     @Column(name = "login_log_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

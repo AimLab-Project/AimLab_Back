@@ -2,7 +2,7 @@ package com.aimlab.service;
 
 import com.aimlab.common.exception.ErrorCode;
 import com.aimlab.common.config.AppProperties;
-import com.aimlab.entity.MailVerificationEntity;
+import com.aimlab.domain.MailVerificationEntity;
 import com.aimlab.common.exception.CustomException;
 import com.aimlab.common.exception.MailVerificationException;
 import com.aimlab.repository.MailVerificationRepository;
@@ -70,7 +70,7 @@ public class MailVerificationServiceMysql implements MailVerificationService{
 
         // 2-3. 인증 번호 or 이메일 불일치 => 인증 횟수 증가
         if(!mailVerification.getVerificationCode().equals(verificationCode) || !mailVerification.getEmail().equals(email)){
-            mailVerification.setAttemptCount(mailVerification.getAttemptCount() + 1);
+            mailVerification.increaseAttemptCount();
             mailVerificationRepository.save(mailVerification);
             throw new MailVerificationException(ErrorCode.INVALID_VERIFICATION_CODE);
         }

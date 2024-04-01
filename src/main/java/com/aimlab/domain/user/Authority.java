@@ -1,4 +1,4 @@
-package com.aimlab.entity;
+package com.aimlab.domain.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

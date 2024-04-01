@@ -1,6 +1,6 @@
 package com.aimlab.common.security;
 
-import com.aimlab.entity.User;
+import com.aimlab.domain.user.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

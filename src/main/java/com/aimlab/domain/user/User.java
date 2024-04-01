@@ -1,5 +1,6 @@
-package com.aimlab.entity;
+package com.aimlab.domain.user;
 
+import com.aimlab.domain.BaseTime;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +11,6 @@ import java.util.UUID;
  */
 @Entity
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +20,7 @@ import java.util.UUID;
             @UniqueConstraint(name = "nickname_unique", columnNames = "user_nickname")
         }
 )
-public class User extends BaseTime{
+public class User extends BaseTime {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -38,4 +38,15 @@ public class User extends BaseTime{
     @Column(name = "authority")
     @Enumerated(EnumType.STRING)
     private Authority authority;
+
+    /**
+     * Setters
+     */
+    public void setUserPassword(String encodedPassword) {
+        this.userPassword = encodedPassword;
+    }
+
+    public void setUserNickname(String nickname) {
+        this.userNickname = nickname;
+    }
 }

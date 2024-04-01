@@ -1,7 +1,7 @@
 package com.aimlab.controller;
 
 import com.aimlab.dto.SuccessResponse;
-import com.aimlab.entity.TestEntity;
+import com.aimlab.domain.TestEntity;
 import com.aimlab.service.TestService;
 import com.aimlab.util.ResponseUtil;
 import com.aimlab.util.SecurityUtil;

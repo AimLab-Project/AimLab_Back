@@ -1,7 +1,7 @@
 package com.aimlab.service;
 
 import com.aimlab.common.exception.ErrorCode;
-import com.aimlab.entity.User;
+import com.aimlab.domain.user.User;
 import com.aimlab.common.exception.CustomException;
 import com.aimlab.repository.UserRepository;
 import com.aimlab.common.security.UserPrincipal;

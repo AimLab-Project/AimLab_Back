@@ -1,6 +1,6 @@
 package com.aimlab.repository;
 
-import com.aimlab.entity.User;
+import com.aimlab.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
