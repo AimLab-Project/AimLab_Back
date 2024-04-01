@@ -147,7 +147,7 @@ public class AuthService {
 
         // 5. 새로 발급한 RT 저장
         RefreshTokenEntity refreshTokenEntity = optional.get();
-        refreshTokenEntity.setNewToken(refreshToken);
+        refreshTokenEntity.setNewToken(newTokens.getRefreshToken());
         refreshTokenRepository.save(refreshTokenEntity);
 
         return newTokens;
