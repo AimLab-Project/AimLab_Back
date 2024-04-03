@@ -7,13 +7,13 @@ import lombok.Getter;
 
 @Getter
 @MappedSuperclass
-public abstract class BaseGame extends BaseTime {
+public abstract class GameBase extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "game_id")
     private Long gameId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User player;
 
     @Column(name = "play_time")
